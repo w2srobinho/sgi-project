@@ -355,3 +355,6 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+
+### vim swap files
+*.swp
