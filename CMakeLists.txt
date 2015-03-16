@@ -10,6 +10,11 @@ add_definitions(-std=c++0x)
 # Extra warnings
 add_definitions(-Wextra)
 
+#############################
+# My tests
+#############################
+set(GMOCK_ROOT ${PROJECT_SOURCE_DIR}/lib/gmock-1.7.0)
+
 # Google Mock & Test
 ###############################################################################
 add_subdirectory(${GMOCK_ROOT})
