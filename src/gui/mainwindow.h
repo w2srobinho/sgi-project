@@ -16,9 +16,6 @@ public:
   ~MainWindow();
 
 private:
-  void configureResources();
-
-private:
   Ui::MainWindow *ui;
 };
 

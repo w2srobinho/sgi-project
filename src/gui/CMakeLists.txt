@@ -24,3 +24,6 @@ if(SRC_FILES)
 endif(SRC_FILES)
 
 target_link_libraries(cg_gui Qt5::Widgets)
+
+CMAKE_POLICY(SET CMP0020 NEW)
+qt5_use_modules(cg_gui Widgets)

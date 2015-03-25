@@ -12,7 +12,7 @@ include_directories(
 
 # Executable dependencies
 if(SRC_FILES)
-  add_executable(cg_app ${SRC_FILES} ${UI_FILES}) 
+  add_executable(cg_app WIN32 ${SRC_FILES} ${UI_FILES}) 
 endif(SRC_FILES)
 
 target_link_libraries(cg_app 
