@@ -4,9 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-
-    //Q_INIT_RESOURCE(ClientMainWindowViewQt);
-    gui_resources::Init();
+    gui_resources::init();
 
     QApplication a(argc, argv);
     MainWindow w;

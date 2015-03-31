@@ -1,25 +1,22 @@
 #ifndef _INCLUDED_POINT_
 #define _INCLUDED_POINT_
 
-#include "geometry.h"
-
 namespace geometries {
   class Point
-      : public Geometry
   {
   public:
     ~Point();
-    Point(double x, double y);
+    Point(const float& x, const float& y);
     Point(const Point& other);
 
-    const double& getX() const;
-    const double& getY() const;
+    const float& getX() const;
+    const float& getY() const;
 
     Point& operator=(const Point& other);
 
   private:
-    double x;
-    double y;
+    float x;
+    float y;
   };
 }
 #endif

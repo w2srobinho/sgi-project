@@ -3,8 +3,8 @@
 
 namespace gui_resources
 {
-   void Init();
-   void CleanUp();
+   void init();
+   void cleanUp();
 }
 
 #endif

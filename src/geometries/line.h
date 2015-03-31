@@ -10,11 +10,14 @@ namespace geometries {
   {
   public:
     ~Line();
-    Line(double x1, double y1, double x2, double y2);
-    Line(const Point& p1, const Point& p2);
+    Line(float x1, float y1, float x2, float y2);
+    //Line(const Point& p1, const Point& p2);
+    Line(Point p1, Point p2);
 
     const Point& getP1() const;
     const Point& getP2() const;
+
+    Point center() override;
 
   private:
     Point p1;

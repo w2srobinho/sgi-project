@@ -4,27 +4,24 @@
 
 void initContribResources()
 {
-   // must be on global namespace
-   Q_INIT_RESOURCE(images);
+  Q_INIT_RESOURCE(images);
 }
 
 void cleanupContribResources()
 {
-   // must be on global namespace
-   Q_CLEANUP_RESOURCE(images);
+  Q_CLEANUP_RESOURCE(images);
 }
 
 namespace gui_resources
 {
 
-void Init()
-{
-   initContribResources();
-}
+  void init()
+  {
+    initContribResources();
+  }
 
-void CleanUp()
-{
-   cleanupContribResources();
-}
-
+  void cleanUp()
+  {
+    cleanupContribResources();
+  }
 }

@@ -27,4 +27,9 @@ namespace geometries {
   {
     return lines.end();
   }
+
+  Point center()
+  {
+    return Point(0, 0);
+  }
 }

@@ -18,6 +18,8 @@ namespace geometries {
     std::vector<Line>::const_iterator begin() const;
     std::vector<Line>::const_iterator end() const;
 
+    Point center() override;
+
   private:
     std::vector<Line> lines;
   };

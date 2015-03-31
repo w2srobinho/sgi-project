@@ -1,11 +1,11 @@
 #include "point.h"
 
 namespace geometries {
-  
+
   Point::~Point()
   {}
   
-  Point::Point(double x, double y)
+  Point::Point(const float& x, const float& y)
   : x{x}
   , y{y}
   {}
@@ -16,12 +16,12 @@ namespace geometries {
   {
   }
 
-  const double& Point::getX() const
+  const float& Point::getX() const
   {
     return x;
   }
 
-  const double& Point::getY() const
+  const float& Point::getY() const
   {
     return y;
   }
@@ -34,5 +34,4 @@ namespace geometries {
     }
     return *this;
   }
-
 }

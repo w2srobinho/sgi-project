@@ -1,7 +1,10 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef _INCLUDED_MAINWINDOW_H
+#define _INCLUDED_MAINWINDOW_H
 
 #include <QMainWindow>
+#include <memory>
+
+class ViewPort;
 
 namespace Ui {
   class MainWindow;
@@ -16,7 +19,26 @@ public:
   ~MainWindow();
 
 private:
+  void showCriticalMessage(std::string message);
+
+private slots:
+  void on_upButton_clicked();
+  void on_leftButton_clicked();
+  void on_downButton_clicked();
+  void on_rightButton_clicked();
+
+  void on_leftRotateButton_clicked();
+  void on_rightRotateButton_clicked();
+
+  void on_zoomInButton_clicked();
+  void on_zoomOutButton_clicked();
+
+  void on_addLineButton_clicked();
+
+private:
   Ui::MainWindow *ui;
+
+  std::unique_ptr<ViewPort> viewPort;
 };
 
 #endif // MAINWINDOW_H
