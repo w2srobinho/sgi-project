@@ -6,17 +6,20 @@ namespace geometries {
   {
   public:
     ~Point();
-    Point(const float& x, const float& y);
+    Point(float x, float y);
     Point(const Point& other);
 
     const float& getX() const;
     const float& getY() const;
+    const float& getZ() const;
 
     Point& operator=(const Point& other);
 
   private:
-    float x;
-    float y;
+    float x_;
+    float y_;
+    float z_;
   };
 }
+
 #endif

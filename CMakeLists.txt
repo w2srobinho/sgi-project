@@ -27,33 +27,6 @@ add_subdirectory(src/app)
 
 set_property(TARGET cg_app      PROPERTY FOLDER "src/app")
 set_property(TARGET cg_gui      PROPERTY FOLDER "src/gui")
+
 # tests
-
-
-### Main program executable
-#################################################################################
-##set(EXECUTABLE_NAME "program")
-##
-### Set link libraries
-### target_link_libraries($EXECUTABLE_NAME ...)
-##
-### Tests executable
-#################################################################################
-##set(TEST_EXECUTABLE_NAME "tests")
-##
-### Test files
-##file(GLOB TEST_FILES "test/*.cpp")
-##
-### Don't include Main.cpp from src
-##file(GLOB MAIN_SRC "src/Main.cpp")
-##list(REMOVE_ITEM SRC_FILES ${MAIN_SRC})
-##
-##add_executable("${TEST_EXECUTABLE_NAME}" ${TEST_FILES} ${SRC_FILES})
-##
-### Set link libraries (order matters)
-##target_link_libraries("${TEST_EXECUTABLE_NAME}" gmock gtest pthread)
-##
-### Include root directory
-##include_directories(BEFORE ".")
-##include_directories(BEFORE "src/")
 

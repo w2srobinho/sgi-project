@@ -5,6 +5,7 @@
 #include <memory>
 
 class ViewPort;
+class Window;
 
 namespace Ui {
   class MainWindow;
@@ -38,7 +39,8 @@ private slots:
 private:
   Ui::MainWindow *ui;
 
-  std::unique_ptr<ViewPort> viewPort;
+  std::unique_ptr<ViewPort> viewPort_;
+  std::unique_ptr<Window> window_;
 };
 
 #endif // MAINWINDOW_H

@@ -3,18 +3,22 @@
 #include "point.h"
 #include "ui_mainwindow.h"
 #include "viewPort.h"
+#include "window.h"
 
 #include <QIcon>
 #include <QMessageBox>
 
 
-MainWindow::MainWindow(QWidget *parent) :
-  QMainWindow(parent),
-  ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent)
+  : QMainWindow(parent)
+  , ui(new Ui::MainWindow)
+  , window_(new Window(800, 600))
+  , viewPort_(new ViewPort(window_.get(), ui->groupBox))
 {
+  Q_INIT_RESOURCE(images);
+
   ui->setupUi(this);
-  viewPort.reset(new ViewPort(ui->groupBox));
-  ui->verticalLayout_3->addWidget(viewPort.get());
+  ui->verticalLayout_3->addWidget(viewPort_.get());
 }
 
 MainWindow::~MainWindow()
@@ -90,5 +94,5 @@ void MainWindow::on_addLineButton_clicked()
   geometries::Point p1(ptoX1.toFloat(), ptoY1.toFloat());
   geometries::Point p2(ptoX2.toFloat(), ptoY2.toFloat());
 
-  viewPort->addGeometry(new geometries::Line(p1, p2));
+  viewPort_->addGeometry(new geometries::Line(p1, p2));
 }

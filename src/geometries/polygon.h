@@ -2,7 +2,6 @@
 #define _INCLUDED_POLYGON_
 
 #include "geometry.h"
-#include "line.h"
 #include "point.h"
 
 #include <vector>
@@ -13,15 +12,18 @@ namespace geometries {
   {
   public:
     ~Polygon();
-    Polygon(std::vector<Point> points);
+    Polygon(const std::initializer_list<Point>& points);
 
-    std::vector<Line>::const_iterator begin() const;
-    std::vector<Line>::const_iterator end() const;
+    std::vector<Point>::const_iterator begin() const;
+    std::vector<Point>::const_iterator end() const;
 
     Point center() override;
+    const std::vector<Point> &getPoints() const override;
+    ::geometries::type type() const override;
 
   private:
-    std::vector<Line> lines;
+    std::vector<Point> points_;
   };
 }
+
 #endif

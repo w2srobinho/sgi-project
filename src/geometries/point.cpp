@@ -5,32 +5,40 @@ namespace geometries {
   Point::~Point()
   {}
   
-  Point::Point(const float& x, const float& y)
-  : x{x}
-  , y{y}
+  Point::Point(float x, float y)
+  : x_(x)
+  , y_(y)
+  , z_(0)
   {}
 
   Point::Point(const Point& other)
-    : x{other.getX()}
-    , y{other.getY()}
+    : x_(other.getX())
+    , y_(other.getY())
+    , z_(other.getZ())
   {
   }
 
   const float& Point::getX() const
   {
-    return x;
+    return x_;
   }
 
   const float& Point::getY() const
   {
-    return y;
+    return y_;
+  }
+
+  const float& Point::getZ() const
+  {
+    return z_;
   }
 
   Point& Point::operator=(const Point& other)
   {
     if (this != &other) {
-      x = other.getX();
-      y = other.getY();
+      x_ = other.getX();
+      y_ = other.getY();
+      z_ = other.getZ();
     }
     return *this;
   }

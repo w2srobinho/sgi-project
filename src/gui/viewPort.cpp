@@ -1,6 +1,9 @@
 #include "viewPort.h"
+#include "window.h"
+#include "line.h"
 
 #include <QPainter>
+#include <QDebug>
 
 
 ViewPort::~ViewPort()
@@ -8,12 +11,13 @@ ViewPort::~ViewPort()
 
 }
 
-ViewPort::ViewPort(QWidget *parent)
-    : QWidget(parent)
+ViewPort::ViewPort(Window *window, QWidget *parent)
+    : window_(window)
+    , QWidget(parent)
 {
-    antialiased = false;
-    transformed = false;
-    pixmap.load(":/images/qt-logo.png");
+    //antialiased = false;
+    //transformed = false;
+    //pixmap.load(":/images/qt-logo.png");
 
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
@@ -29,6 +33,13 @@ QSize ViewPort::sizeHint() const
     return QSize(400, 200);
 }
 
+void ViewPort::addGeometry(geometries::Geometry *geometry)
+{
+    window_->addGeometry(geometry);
+    update();
+}
+
+/*
 void ViewPort::setPen(const QPen &pen)
 {
     this->pen = pen;
@@ -52,44 +63,49 @@ void ViewPort::setTransformed(bool transformed)
     this->transformed = transformed;
     update();
 }
-
+*/
 void ViewPort::paintEvent(QPaintEvent *)
-{
-    static const QPoint points[4] = {
-        QPoint(10, 80),
-        QPoint(20, 10),
-        QPoint(80, 30),
-        QPoint(90, 70)
-    };
-
-    QRect rect(10, 20, 80, 60);
-
-    QPainterPath path;
-    path.moveTo(20, 80);
-    path.lineTo(20, 30);
-    path.cubicTo(80, 0, 50, 50, 80, 80);
-
-    int startAngle = 20 * 16;
-    int arcLength = 120 * 16;
-
+{    
     QPainter painter(this);
-    painter.setPen(pen);
-    painter.setBrush(brush);
-    if (antialiased)
-        painter.setRenderHint(QPainter::Antialiasing, true);
+    //painter.setPen(pen);
+    //painter.setBrush(brush);
+    //if (antialiased)
+    //    painter.setRenderHint(QPainter::Antialiasing, true);
+    qDebug() << "antes do looping";
+    //auto vectorPoints =
+    for (auto it : window_->getGeometries()) {
+      qDebug() << "pós looping";
+      if (it->type() == geometries::LINE) {
+        qDebug() << "pós if";
 
-    for (int x = 0; x < width(); x += 100) {
-        for (int y = 0; y < height(); y += 100) {
-            painter.save();
-            painter.translate(x, y);
-
-            if (transformed) {
-                painter.translate(50, 50);
-                painter.rotate(60.0);
-                painter.scale(0.6, 0.9);
-                painter.translate(-50, -50);
-            }
-
+//        auto& line = ;
+        //painter.drawLine(QPointF(it->getPoints().at(0).getX(), it->getPoints().at(0).getY()),
+        //                 QPointF(it->getPoints().at(1).getX(), it->getPoints().at(1).getY()));
+      }
+      //switch (geometry->type()) {
+      //  qDebug() << "switch geometry type: " << geometry->type();
+      //  case geometries::LINE:
+      //    auto& line = geometry.getPoints();
+      //
+      //    //painter.drawLine(QPointF(line.at(0).getX(), line.at(0).getY()),
+      //    //                 QPointF(line.at(1).getX(), line.at(1).getY()));
+      //    break;
+      //  //default:
+      //  //  break;
+      //}
+     // painter.restore();
+    }
+//        for (int y = 0; y < height(); y += 100) {
+//            painter.save();
+//            painter.translate(x, y);
+//
+//            if (transformed) {
+//                painter.translate(50, 50);
+//                painter.rotate(60.0);
+//                painter.scale(0.6, 0.9);
+//                painter.translate(-50, -50);
+//            }
+//
 //            switch (shape) {
 //            case Line:
 //                painter.drawLine(rect.bottomLeft(), rect.topRight());
@@ -130,9 +146,9 @@ void ViewPort::paintEvent(QPaintEvent *)
 //            case Pixmap:
 //                painter.drawPixmap(10, 10, pixmap);
 //            }
-            painter.restore();
-        }
-    }
+//            painter.restore();
+//        }
+//    }
 
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.setPen(palette().dark().color());

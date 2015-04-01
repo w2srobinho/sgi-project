@@ -13,23 +13,24 @@ QT5_WRAP_UI(UI_FILES
     ui_files/mainwindow.ui
 )
 
-qt5_add_resources(QRC_FILES images.qrc)
-
 # Source files
 file(GLOB SRC_FILES "*.cpp" "*.h")
 
 include_directories(
   ${cg_geometries_SOURCE_DIR}
+  ${cg_domain_SOURCE_DIR}
 )
 
 # Executable dependencies
 if(SRC_FILES)
-  add_library(cg_gui STATIC ${SRC_FILES} ${UI_FILES} ${QRC_FILES}) 
-endif(SRC_FILES)
+  add_library(cg_gui STATIC ${SRC_FILES} ${UI_FILES}) 
+endif()
 
 target_link_libraries(cg_gui 
   Qt5::Widgets
-  cg_geometries)
+  cg_geometries
+  cg_domain
+)
 
 CMAKE_POLICY(SET CMP0020 NEW)
 qt5_use_modules(cg_gui Widgets)
