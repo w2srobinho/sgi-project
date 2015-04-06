@@ -12,12 +12,12 @@
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
   , ui(new Ui::MainWindow)
-  , window_(new Window(800, 600))
-  , viewPort_(new ViewPort(window_.get(), ui->groupBox))
 {
   Q_INIT_RESOURCE(images);
 
   ui->setupUi(this);
+  window_ = std::make_unique<Window>(800, 600);
+  viewPort_ = std::make_unique<ViewPort>(window_.get(), ui->groupBox);
   ui->verticalLayout_3->addWidget(viewPort_.get());
 }
 

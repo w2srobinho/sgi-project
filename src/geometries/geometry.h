@@ -7,7 +7,7 @@
 
 namespace geometries {
 
-  enum type {POINT, LINE, POLYGON};
+  enum shape {POINT, LINE, POLYGON};
 
   class Geometry
   {
@@ -15,8 +15,8 @@ namespace geometries {
     virtual ~Geometry() {}
 
     virtual Point center() = 0;
-    virtual const std::vector<Point>& getPoints() const = 0;
-    virtual ::geometries::type type() const = 0;
+    virtual std::vector<Point> getPoints() const = 0;
+    virtual ::geometries::shape type() const = 0;
   };
 }
 

@@ -26,12 +26,12 @@ namespace geometries {
     return Point(0, 0);
   }
 
-  const std::vector<Point> &Polygon::getPoints() const
-  {
+  std::vector<Point> Polygon::getPoints() const
+{
     return points_;
   }
 
-  ::geometries::type Polygon::type() const
+  ::geometries::shape Polygon::type() const
   {
     return POLYGON;
   }

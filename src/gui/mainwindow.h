@@ -1,5 +1,5 @@
-#ifndef _INCLUDED_MAINWINDOW_H
-#define _INCLUDED_MAINWINDOW_H
+#ifndef _INCLUDED_MAINWINDOW_
+#define _INCLUDED_MAINWINDOW_
 
 #include <QMainWindow>
 #include <memory>
@@ -18,6 +18,7 @@ class MainWindow : public QMainWindow
 public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
+
 
 private:
   void showCriticalMessage(std::string message);

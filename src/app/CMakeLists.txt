@@ -20,3 +20,5 @@ endif(SRC_FILES)
 target_link_libraries(cg_app
   cg_gui
   )
+
+USE_QT5_MODULES(cg_app Qt5::Widgets)

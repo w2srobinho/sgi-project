@@ -13,6 +13,7 @@ include(init)
 
 project(cg_project)
 
+#includes 
 CMAKE_POLICY(SET CMP0020 NEW)
 include(build)
 # Third_party

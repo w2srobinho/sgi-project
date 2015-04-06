@@ -6,16 +6,19 @@ namespace geometries {
   {}
 
   Line::Line(float x1, float y1, float x2, float y2)
-    : points_{Point(x1, y1), Point(x2, y2)}
-  {}
+  {
+    points_ = { Point(x1, y1), Point(x2, y2) };
+  }
 
   Line::Line(const Point& p1, const Point& p2)
-    : points_{p1, p2}
-  {}
+  {
+    points_ = { p1, p2 };
+  }
 
-  Line::Line(const std::initializer_list<Point> &points)
-    : points_{points}
-  {}
+  Line::Line(const std::vector<Point> &points)
+  {
+    points_ = points;
+  }
 
   const Point& Line::getP1() const
   {
@@ -32,12 +35,12 @@ namespace geometries {
     return Point(0, 0);
   }
 
-  const std::vector<Point>& Line::getPoints() const
+  std::vector<Point> Line::getPoints() const
   {
     return points_;
   }
 
-  ::geometries::type Line::type() const
+  ::geometries::shape Line::type() const
   {
     return LINE;
   }

@@ -3,9 +3,7 @@ if(__QT_INCLUDED)
 endif()
 set(__QT_INCLUDED TRUE)
 
-message("${CMAKE_PREFIX_PATH}")
 if(DEFINED ENV{QT5DIR})
-  message("nao tem prefix definido")
   set(CMAKE_PREFIX_PATH
     "${CMAKE_PREFIX_PATH}"
     "$ENV{QT5DIR}")

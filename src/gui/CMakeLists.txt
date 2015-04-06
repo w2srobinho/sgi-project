@@ -31,6 +31,3 @@ target_link_libraries(cg_gui
   cg_geometries
   cg_domain
 )
-
-CMAKE_POLICY(SET CMP0020 NEW)
-qt5_use_modules(cg_gui Widgets)
