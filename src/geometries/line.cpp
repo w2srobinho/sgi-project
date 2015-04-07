@@ -1,5 +1,7 @@
 #include "line.h"
 
+#include <cassert>
+
 namespace geometries {
   
   Line::~Line()
@@ -37,10 +39,11 @@ namespace geometries {
 
   std::vector<Point> Line::getPoints() const
   {
+    assert(points_.size() == 2);
     return points_;
   }
 
-  ::geometries::shape Line::type() const
+  shape Line::type() const
   {
     return LINE;
   }

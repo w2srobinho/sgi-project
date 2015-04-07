@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="layoutDirection">
+   <enum>Qt::LeftToRight</enum>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <property name="minimumSize">
     <size>
@@ -73,7 +76,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="pointTab">
          <property name="minimumSize">
@@ -142,7 +145,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit">
+             <widget class="QLineEdit" name="pointEditX">
               <property name="maximumSize">
                <size>
                 <width>50</width>
@@ -181,7 +184,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_2">
+             <widget class="QLineEdit" name="pointEditY">
               <property name="maximumSize">
                <size>
                 <width>50</width>
@@ -211,7 +214,7 @@
              <number>10</number>
             </property>
             <item>
-             <widget class="QPushButton" name="addPointButton_9">
+             <widget class="QPushButton" name="addPointButton">
               <property name="text">
                <string>add</string>
               </property>
@@ -686,7 +689,7 @@
              </layout>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_9">
+             <layout class="QVBoxLayout" name="verticalLayout_17">
               <property name="topMargin">
                <number>10</number>
               </property>
@@ -746,172 +749,193 @@
           <height>100</height>
          </size>
         </property>
-        <widget class="QPushButton" name="upButton">
-         <property name="geometry">
-          <rect>
-           <x>130</x>
-           <y>10</y>
-           <width>51</width>
-           <height>27</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:/resources/navigate_up_24.png</normaloff>:/resources/navigate_up_24.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>24</width>
-           <height>24</height>
-          </size>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="downButton">
-         <property name="geometry">
-          <rect>
-           <x>130</x>
-           <y>70</y>
-           <width>51</width>
-           <height>27</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:/resources/navigate_down_24.png</normaloff>:/resources/navigate_down_24.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>24</width>
-           <height>24</height>
-          </size>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="leftButton">
-         <property name="geometry">
-          <rect>
-           <x>80</x>
-           <y>40</y>
-           <width>51</width>
-           <height>27</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:/resources/navigate_left_24.png</normaloff>:/resources/navigate_left_24.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>24</width>
-           <height>24</height>
-          </size>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="rightButton">
-         <property name="geometry">
-          <rect>
-           <x>180</x>
-           <y>40</y>
-           <width>51</width>
-           <height>27</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:/resources/navigate_right_24.png</normaloff>:/resources/navigate_right_24.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>24</width>
-           <height>24</height>
-          </size>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="leftRotateButton">
-         <property name="geometry">
-          <rect>
-           <x>80</x>
-           <y>10</y>
-           <width>51</width>
-           <height>27</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:/resources/rotate_left.png</normaloff>:/resources/rotate_left.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>16</width>
-           <height>16</height>
-          </size>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="rightRotateButton">
-         <property name="geometry">
-          <rect>
-           <x>80</x>
-           <y>70</y>
-           <width>51</width>
-           <height>27</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:/resources/rotate_right.png</normaloff>:/resources/rotate_right.png</iconset>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="zoomInButton">
-         <property name="geometry">
-          <rect>
-           <x>180</x>
-           <y>10</y>
-           <width>51</width>
-           <height>27</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:/resources/zoom_in.png</normaloff>:/resources/zoom_in.png</iconset>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="zoomOutButton">
-         <property name="geometry">
-          <rect>
-           <x>180</x>
-           <y>70</y>
-           <width>51</width>
-           <height>27</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>:/resources/zoom_out.png</normaloff>:/resources/zoom_out.png</iconset>
-         </property>
-        </widget>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="1" column="2">
+          <widget class="QPushButton" name="leftButton">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/resources/navigate_left_24.png</normaloff>:/resources/navigate_left_24.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <widget class="QPushButton" name="rightButton">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/resources/navigate_right_24.png</normaloff>:/resources/navigate_right_24.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="leftRotateButton">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/resources/rotate_left.png</normaloff>:/resources/rotate_left.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="upButton">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/resources/navigate_up_24.png</normaloff>:/resources/navigate_up_24.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QPushButton" name="rightRotateButton">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/resources/rotate_right.png</normaloff>:/resources/rotate_right.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="zoomInButton">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/resources/zoom_in.png</normaloff>:/resources/zoom_in.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="4">
+          <widget class="QPushButton" name="zoomOutButton">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/resources/zoom_out.png</normaloff>:/resources/zoom_out.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="3">
+          <widget class="QPushButton" name="downButton">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/resources/navigate_down_24.png</normaloff>:/resources/navigate_down_24.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>Zoom (%)</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>90</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="6">
+          <widget class="QLineEdit" name="lineEdit_2"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_13">
+           <property name="text">
+            <string>Rotate º</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLineEdit" name="lineEdit"/>
+         </item>
+         <item row="1" column="5">
+          <spacer name="horizontalSpacer_12">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>90</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+        <zorder>upButton</zorder>
+        <zorder>downButton</zorder>
+        <zorder>leftButton</zorder>
+        <zorder>rightButton</zorder>
+        <zorder>leftRotateButton</zorder>
+        <zorder>rightRotateButton</zorder>
+        <zorder>zoomInButton</zorder>
+        <zorder>zoomOutButton</zorder>
+        <zorder>pointAdded</zorder>
+        <zorder>label_14</zorder>
+        <zorder>label_13</zorder>
+        <zorder>lineEdit_2</zorder>
+        <zorder>lineEdit</zorder>
+        <zorder>horizontalSpacer</zorder>
+        <zorder>horizontalSpacer_12</zorder>
        </widget>
       </item>
      </layout>
@@ -964,7 +988,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

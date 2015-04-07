@@ -43,21 +43,34 @@ void ViewPort::paintEvent(QPaintEvent *)
     {  
       switch (geometry->type()) 
       {
-      case geometries::POINT:
-        break;
-      case geometries::LINE:
-        auto pointAtLine = geometry->getPoints();
-        painter.drawLine(QPointF(pointAtLine.at(0).getX(), pointAtLine.at(0).getY()),
-                         QPointF(pointAtLine.at(1).getX(), pointAtLine.at(1).getY()));
-        break;
-        //default:
-        //  break;
+        case geometries::POINT:
+        {
+          auto point = geometry->getPoints().at(0);
+          painter.drawPoint(QPointF(point.getX(), point.getY()));
+          break;
+        }
+        case geometries::LINE:
+        {
+          auto pointAtLine = geometry->getPoints();
+          painter.drawLine(QPointF(pointAtLine.at(0).getX(), pointAtLine.at(0).getY()),
+            QPointF(pointAtLine.at(1).getX(), pointAtLine.at(1).getY()));
+          break;
+        }
+        case geometries::POLYGON:
+        {
+          QPolygonF polygonQt;
+          for (auto point : geometry->getPoints())
+          {
+            polygonQt << QPointF(point.getX(), point.getY());
+          }
+          painter.drawPolygon(polygonQt);
+        }
       }
-    painter.restore();
+      painter.restore();
     }
 
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.setPen(palette().dark().color());
     painter.setBrush(Qt::NoBrush);
-    painter.drawRect(QRect(0, 0, width() - 1, height() - 1));
+    //painter.drawRect(QRect(0, 0, width() - 1, height() - 1));
 }

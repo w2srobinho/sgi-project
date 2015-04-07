@@ -16,7 +16,7 @@ namespace geometries {
 
     virtual Point center() = 0;
     virtual std::vector<Point> getPoints() const = 0;
-    virtual ::geometries::shape type() const = 0;
+    virtual shape type() const = 0;
   };
 }
 

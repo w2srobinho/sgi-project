@@ -19,7 +19,7 @@ namespace geometries {
 
     Point center() override;
     std::vector<Point> getPoints() const override;
-    ::geometries::shape type() const override;
+    shape type() const override;
 
   private:
     std::vector<Point> points_;

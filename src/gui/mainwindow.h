@@ -3,9 +3,15 @@
 
 #include <QMainWindow>
 #include <memory>
+#include <vector>
 
 class ViewPort;
 class Window;
+
+namespace geometries
+{
+  class Point;
+}
 
 namespace Ui {
   class MainWindow;
@@ -22,8 +28,9 @@ public:
 
 private:
   void showCriticalMessage(std::string message);
+  void connectButtons();
 
-private slots:
+protected slots:
   void on_upButton_clicked();
   void on_leftButton_clicked();
   void on_downButton_clicked();
@@ -35,13 +42,18 @@ private slots:
   void on_zoomInButton_clicked();
   void on_zoomOutButton_clicked();
 
+  void addPointButton_clicked();
   void on_addLineButton_clicked();
+  void addPointOnPolygonButton_clicked();
+  void addPolygonButton_clicked();
 
 private:
   Ui::MainWindow *ui;
 
   std::unique_ptr<ViewPort> viewPort_;
   std::unique_ptr<Window> window_;
+
+  std::vector<geometries::Point> pointsToPolygon;
 };
 
-#endif // MAINWINDOW_H
+#endif

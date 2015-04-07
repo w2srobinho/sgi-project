@@ -5,7 +5,7 @@ namespace geometries {
   class Point
   {
   public:
-    ~Point();
+    virtual ~Point();
     Point(float x, float y);
     Point(const Point& other);
 

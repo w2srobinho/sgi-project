@@ -5,7 +5,7 @@ namespace geometries {
   Polygon::~Polygon()
   {}
 
-  Polygon::Polygon(const std::initializer_list<Point>& points)
+  Polygon::Polygon(const std::vector<Point>& points)
     : points_(points)
   {
     
@@ -31,7 +31,7 @@ namespace geometries {
     return points_;
   }
 
-  ::geometries::shape Polygon::type() const
+  shape Polygon::type() const
   {
     return POLYGON;
   }
