@@ -58,9 +58,14 @@ Makefile*
 
 *.autosave
 
-#QtCtreator Qml
+# QtCreator Qml
+
 *.qmlproject.user
 *.qmlproject.user.*
+
+# QtCreator Cmake
+
+CMakeLists.txt.user.*
 
 # C++ objects and libs
 *.a

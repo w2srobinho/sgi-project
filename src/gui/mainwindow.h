@@ -31,19 +31,19 @@ private:
   void connectButtons();
 
 protected slots:
-  void on_upButton_clicked();
-  void on_leftButton_clicked();
-  void on_downButton_clicked();
-  void on_rightButton_clicked();
+  void upButton_clicked();
+  void leftButton_clicked();
+  void downButton_clicked();
+  void rightButton_clicked();
 
-  void on_leftRotateButton_clicked();
-  void on_rightRotateButton_clicked();
+  void leftRotateButton_clicked();
+  void rightRotateButton_clicked();
 
-  void on_zoomInButton_clicked();
-  void on_zoomOutButton_clicked();
+  void zoomInButton_clicked();
+  void zoomOutButton_clicked();
 
   void addPointButton_clicked();
-  void on_addLineButton_clicked();
+  void addLineButton_clicked();
   void addPointOnPolygonButton_clicked();
   void addPolygonButton_clicked();
 

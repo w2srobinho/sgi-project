@@ -5,16 +5,23 @@
 
 #include <memory>
 #include <vector>
+#include <utility>
 
 class Window
 {
 public:
   ~Window();
-  Window(float width, float height);
+  Window();
 
   void addGeometry(geometries::Geometry *shape);
 
   std::vector<geometries::Geometry*> getGeometries() const;
+
+  void setWindowSize(float width, float height);
+  std::pair<float, float> getWindowSize() const;
+
+  void resetDefaultSize();
+
 
 private:
   float width_;

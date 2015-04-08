@@ -22,6 +22,8 @@ public:
 
     void addGeometry(geometries::Geometry *geometry);
 
+
+
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 

@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->setupUi(this);
   connectButtons();
-  window_ = std::make_unique<Window>(800, 600);
+  window_ = std::make_unique<Window>();
   viewPort_ = std::make_unique<ViewPort>(window_.get(), ui->groupBox);
   ui->verticalLayout_3->addWidget(viewPort_.get());
 }
@@ -31,42 +31,42 @@ MainWindow::~MainWindow()
   delete ui;
 }
 
-void MainWindow::on_upButton_clicked()
+void MainWindow::upButton_clicked()
 {
 
 }
 
-void MainWindow::on_leftButton_clicked()
+void MainWindow::leftButton_clicked()
 {
 
 }
 
-void MainWindow::on_downButton_clicked()
+void MainWindow::downButton_clicked()
 {
 
 }
 
-void MainWindow::on_rightButton_clicked()
+void MainWindow::rightButton_clicked()
 {
 
 }
 
-void MainWindow::on_leftRotateButton_clicked()
+void MainWindow::leftRotateButton_clicked()
 {
 
 }
 
-void MainWindow::on_rightRotateButton_clicked()
+void MainWindow::rightRotateButton_clicked()
 {
 
 }
 
-void MainWindow::on_zoomInButton_clicked()
+void MainWindow::zoomInButton_clicked()
 {
-
+  //float percent = ui->
 }
 
-void MainWindow::on_zoomOutButton_clicked()
+void MainWindow::zoomOutButton_clicked()
 {
 
 }
@@ -96,7 +96,7 @@ void MainWindow::showCriticalMessage(std::string message)
                         QMessageBox::Ok);
 }
 
-void MainWindow::on_addLineButton_clicked()
+void MainWindow::addLineButton_clicked()
 {
   auto ptoX1 = ui->lineX1->text();
   auto ptoY1 = ui->lineY1->text();
@@ -155,12 +155,17 @@ void MainWindow::addPolygonButton_clicked()
 
 void MainWindow::connectButtons()
 {
+  ui->rotateEdit->setEnabled(false);
   connect(ui->addPointButton, &QPushButton::clicked,
     this, &MainWindow::addPointButton_clicked);
   connect(ui->addLineButton, &QPushButton::clicked,
-    this, &MainWindow::addPointButton_clicked);
+    this, &MainWindow::addLineButton_clicked);
   connect(ui->addPointOnPolygonButton, &QPushButton::clicked,
     this, &MainWindow::addPointOnPolygonButton_clicked);
   connect(ui->addPolygonButton, &QPushButton::clicked,
     this, &MainWindow::addPolygonButton_clicked);
+  connect(ui->zoomInButton, &QPushButton::clicked,
+    this, &MainWindow::zoomInButton_clicked);
+  connect(ui->zoomOutButton, &QPushButton::clicked,
+    this, &MainWindow::zoomOutButton_clicked);
 }

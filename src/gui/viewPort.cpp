@@ -17,6 +17,7 @@ ViewPort::ViewPort(Window *window, QWidget *parent)
 {
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
+    
 }
 
 QSize ViewPort::minimumSizeHint() const
