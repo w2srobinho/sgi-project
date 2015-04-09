@@ -13,16 +13,20 @@ namespace geometries {
   public:
     ~Polygon();
     Polygon(const std::vector<Point>& points);
+    Polygon(const std::vector<Point>& points, const std::string& name);
 
     std::vector<Point>::const_iterator begin() const;
     std::vector<Point>::const_iterator end() const;
 
     Point center() override;
-    std::vector<Point> getPoints() const override;
     shape type() const override;
+    std::vector<Point> getPoints() const override;
+    const std::string& getName() const override;
+
 
   private:
     std::vector<Point> points_;
+    std::string name_;
   };
 }
 

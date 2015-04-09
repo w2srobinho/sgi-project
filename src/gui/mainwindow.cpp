@@ -1,16 +1,19 @@
+#include "conversions.h"
 #include "graphicPoint.h"
 #include "line.h"
 #include "mainwindow.h"
 #include "point.h"
+#include "polygon.h"
 #include "ui_mainwindow.h"
 #include "viewPort.h"
 #include "window.h"
 
 #include <QIcon>
 #include <QMessageBox>
+#include <QString>
 
 #include <assert.h>
-#include "polygon.h"
+#include <iostream>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -21,9 +24,10 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->setupUi(this);
   connectButtons();
-  window_ = std::make_unique<Window>();
+  window_ = std::make_unique<Window>(800, 600);
   viewPort_ = std::make_unique<ViewPort>(window_.get(), ui->groupBox);
   ui->verticalLayout_3->addWidget(viewPort_.get());
+  ui->displayZoom->setDisabled(true);
 }
 
 MainWindow::~MainWindow()
@@ -63,29 +67,48 @@ void MainWindow::rightRotateButton_clicked()
 
 void MainWindow::zoomInButton_clicked()
 {
-  //float percent = ui->
+  window_->zoomIn();
+  updateDisplayZoom();
 }
 
 void MainWindow::zoomOutButton_clicked()
 {
-
+  window_->zoomOut();
+  updateDisplayZoom();
 }
 
 
+void MainWindow::updateDisplayZoom()
+{
+  viewPort_->redraw();
+  auto amount = utils::convert::floatToString(window_->getActualAmount(), 4);
+  ui->displayZoom->setText(QString(amount.c_str()));
+}
+
 void MainWindow::addPointButton_clicked()
 {
+  assert(pointsToPolygon.size() > 1);
   auto x = ui->pointEditX->text();
   auto y = ui->pointEditY->text();
 
-  if (ui->pointName->text().isEmpty() ||
-      x.isEmpty() ||
+  if (x.isEmpty() ||
       y.isEmpty())
   {
     showCriticalMessage("Fill in the fields correctly!");
     return;
   }
 
-  viewPort_->addGeometry(new geometries::GraphicPoint(x.toFloat(), y.toFloat()));
+  auto name = ui->pointName->text();
+  geometries::Geometry * geometry;
+
+  if (name.isEmpty())
+    geometry = new geometries::GraphicPoint(x.toFloat(), y.toFloat());
+  else {
+    geometry = new geometries::GraphicPoint(x.toFloat(), y.toFloat(), name.toStdString());
+  }
+
+  viewPort_->addGeometry(geometry);
+  ui->listWidget->addItem(QString(geometry->getName().c_str()));
 }
 
 void MainWindow::showCriticalMessage(std::string message)
@@ -103,8 +126,7 @@ void MainWindow::addLineButton_clicked()
   auto ptoX2 = ui->lineX2->text();
   auto ptoY2 = ui->lineY2->text();
 
-  if (ui->LineName->text().isEmpty() ||
-      ptoX1.isEmpty() ||
+  if (ptoX1.isEmpty() ||
       ptoY1.isEmpty() ||
       ptoX2.isEmpty() ||
       ptoY2.isEmpty())
@@ -113,10 +135,19 @@ void MainWindow::addLineButton_clicked()
     return;
   }
 
+  auto name = ui->LineName->text();
   geometries::Point p1(ptoX1.toFloat(), ptoY1.toFloat());
   geometries::Point p2(ptoX2.toFloat(), ptoY2.toFloat());
 
-  viewPort_->addGeometry(new geometries::Line(p1, p2));
+  geometries::Geometry *geometry;
+
+  if (name.isEmpty())
+    geometry = new geometries::Line({ p1, p2 });
+  else
+    geometry = new geometries::Line(p1, p2, name.toStdString());
+
+  viewPort_->addGeometry(geometry);
+  ui->listWidget->addItem(QString(geometry->getName().c_str()));
 }
 
 
@@ -143,13 +174,17 @@ void MainWindow::addPolygonButton_clicked()
   if (!ui->polygonEditX->text().isEmpty())
     addPointOnPolygonButton_clicked();
 
-  if (ui->polygonName->text().isEmpty())
-  {
-    showCriticalMessage("Set a name to Polygon");
-    return;
-  }
+  auto name = ui->polygonName->text();
+  geometries::Geometry * geometry;
+
+  if (name.isEmpty())
+    geometry = new geometries::Polygon(pointsToPolygon);
+  else
+    geometry = new geometries::Polygon(pointsToPolygon, name.toStdString());
+
   assert(pointsToPolygon.size() > 1);
-  viewPort_->addGeometry(new geometries::Polygon(pointsToPolygon));
+  viewPort_->addGeometry(geometry);
+  ui->listWidget->addItem(QString(geometry->getName().c_str()));
   pointsToPolygon.clear();
 }
 

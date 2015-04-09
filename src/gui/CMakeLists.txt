@@ -19,6 +19,7 @@ file(GLOB SRC_FILES "*.cpp" "*.h")
 include_directories(
   ${cg_geometries_SOURCE_DIR}
   ${cg_domain_SOURCE_DIR}
+  ${utils_SOURCE_DIR}
 )
 
 # Executable dependencies
@@ -30,4 +31,5 @@ target_link_libraries(cg_gui
   Qt5::Widgets
   cg_geometries
   cg_domain
+  utils
 )

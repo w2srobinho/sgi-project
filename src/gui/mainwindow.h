@@ -29,6 +29,7 @@ public:
 private:
   void showCriticalMessage(std::string message);
   void connectButtons();
+  void updateDisplayZoom();
 
 protected slots:
   void upButton_clicked();

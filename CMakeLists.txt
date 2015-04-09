@@ -21,13 +21,11 @@ include(build)
 include(qt)
 
 # src
+add_subdirectory(src/utils)
 add_subdirectory(src/geometries)
 add_subdirectory(src/domain)
 add_subdirectory(src/gui)
 add_subdirectory(src/app)
-
-set_property(TARGET cg_app      PROPERTY FOLDER "src/app")
-set_property(TARGET cg_gui      PROPERTY FOLDER "src/gui")
 
 # tests
 

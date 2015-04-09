@@ -6,9 +6,16 @@ namespace geometries {
   {}
 
   Polygon::Polygon(const std::vector<Point>& points)
-    : points_(points)
+    : Polygon(points, "Polygon")
   {
-    
+
+  }
+
+  Polygon::Polygon(const std::vector<Point>& points, const std::string& name)
+    : points_(points)
+    , name_(generateUniqueName(name))
+  {
+
   }
 
   std::vector<Point>::const_iterator Polygon::begin() const
@@ -35,4 +42,10 @@ namespace geometries {
   {
     return POLYGON;
   }
+
+  const std::string& Polygon::getName() const
+  {
+    return name_;
+  }
+
 }

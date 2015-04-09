@@ -21,8 +21,7 @@ public:
     QSize sizeHint() const Q_DECL_OVERRIDE;
 
     void addGeometry(geometries::Geometry *geometry);
-
-
+    void redraw();
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;

@@ -7,19 +7,20 @@ namespace geometries {
   Line::~Line()
   {}
 
-  Line::Line(float x1, float y1, float x2, float y2)
+  Line::Line(const std::initializer_list<Point> &points)
+    : Line(points, "Line")
   {
-    points_ = { Point(x1, y1), Point(x2, y2) };
+  }
+  
+  Line::Line(const Point& p1, const Point& p2, const std::string& name)
+    : Line({p1, p2}, name)
+  {
   }
 
-  Line::Line(const Point& p1, const Point& p2)
+  Line::Line(const std::vector<Point> &points, const std::string& name)
+    : points_(points)
+    , name_(generateUniqueName(name))
   {
-    points_ = { p1, p2 };
-  }
-
-  Line::Line(const std::vector<Point> &points)
-  {
-    points_ = points;
   }
 
   const Point& Line::getP1() const
@@ -47,4 +48,10 @@ namespace geometries {
   {
     return LINE;
   }
+
+  const std::string& Line::getName() const
+  {
+    return name_;
+  }
+
 }

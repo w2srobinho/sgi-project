@@ -2,25 +2,22 @@
 
 #include <memory>
 
-namespace
-{
-  const float WIDTH = 800;
-  const float HEIGHT = 600;
-}
-
 Window::~Window()
 {
 
 }
 
-Window::Window()
+Window::Window(float width, float height)
+  : width_(width)
+  , height_(height)
 {
-
+  defaultWidth = width_;
 }
 
 void Window::addGeometry(geometries::Geometry *element)
 {
   geometries_.push_back(element);
+  displayFile.insert({ element->getName(), element });
   cleanUp.push_back(std::unique_ptr<geometries::Geometry>(element));
 }
 
@@ -29,16 +26,35 @@ std::vector<geometries::Geometry*> Window::getGeometries() const
   return geometries_;
 }
 
-
-void Window::setWindowSize(float width, float height)
+std::pair<float, float> Window::getWindowSize() const
 {
-  width_ = width;
-  height_ = height;
+  return std::pair<float, float> {width_, height_};
 }
 
-
-void Window::resetDefaultSize()
+std::pair<geometries::Point, geometries::Point> Window::getWindowPoints() const
 {
-  width_ = WIDTH;
-  height_ = HEIGHT;
+  geometries::Point p1(0, 0);
+  geometries::Point p2(width_, height_);
+  return std::pair<geometries::Point, geometries::Point> {p1, p2};
+}
+
+void Window::zoomIn()
+{
+  zoom(1.15f);
+}
+
+void Window::zoomOut()
+{
+  zoom(0.85f);
+}
+
+float Window::getActualAmount() const
+{
+  return width_ / defaultWidth * 100;
+}
+
+void Window::zoom(float factor)
+{
+  width_ *= factor;
+  height_ *= factor;
 }

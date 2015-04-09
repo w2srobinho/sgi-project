@@ -75,3 +75,8 @@ void ViewPort::paintEvent(QPaintEvent *)
     painter.setBrush(Qt::NoBrush);
     //painter.drawRect(QRect(0, 0, width() - 1, height() - 1));
 }
+
+void ViewPort::redraw()
+{
+  update();
+}
