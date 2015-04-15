@@ -15,6 +15,9 @@
 #include <assert.h>
 #include <iostream>
 
+namespace {
+  const int RATE_TO_MOVE = 2;
+}
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
@@ -24,10 +27,9 @@ MainWindow::MainWindow(QWidget *parent)
 
   ui->setupUi(this);
   connectButtons();
-  window_ = std::make_unique<Window>(800, 600);
-  viewPort_ = std::make_unique<ViewPort>(window_.get(), ui->groupBox);
-  ui->verticalLayout_3->addWidget(viewPort_.get());
-  ui->displayZoom->setDisabled(true);
+  window = std::make_unique<Window>(geometries::Point(0, 0), geometries::Point(800, 600));
+  viewPort = std::make_unique<ViewPort>(window.get(), ui->groupBox);
+  ui->verticalLayout_3->addWidget(viewPort.get());
 }
 
 MainWindow::~MainWindow()
@@ -37,22 +39,26 @@ MainWindow::~MainWindow()
 
 void MainWindow::upButton_clicked()
 {
-
-}
-
-void MainWindow::leftButton_clicked()
-{
-
+  window->verticalMove(-RATE_TO_MOVE);
+  viewPort->redraw();
 }
 
 void MainWindow::downButton_clicked()
 {
+  window->verticalMove(RATE_TO_MOVE);
+  viewPort->redraw();
+}
 
+void MainWindow::leftButton_clicked()
+{
+  window->horizontalMove(RATE_TO_MOVE);
+  viewPort->redraw();
 }
 
 void MainWindow::rightButton_clicked()
 {
-
+  window->horizontalMove(-RATE_TO_MOVE);
+  viewPort->redraw();
 }
 
 void MainWindow::leftRotateButton_clicked()
@@ -67,22 +73,14 @@ void MainWindow::rightRotateButton_clicked()
 
 void MainWindow::zoomInButton_clicked()
 {
-  window_->zoomIn();
-  updateDisplayZoom();
+  window->zoomIn();
+  viewPort->redraw();
 }
 
 void MainWindow::zoomOutButton_clicked()
 {
-  window_->zoomOut();
-  updateDisplayZoom();
-}
-
-
-void MainWindow::updateDisplayZoom()
-{
-  viewPort_->redraw();
-  auto amount = utils::convert::floatToString(window_->getActualAmount(), 4);
-  ui->displayZoom->setText(QString(amount.c_str()));
+  window->zoomOut();
+  viewPort->redraw();
 }
 
 void MainWindow::addPointButton_clicked()
@@ -107,7 +105,7 @@ void MainWindow::addPointButton_clicked()
     geometry = new geometries::GraphicPoint(x.toFloat(), y.toFloat(), name.toStdString());
   }
 
-  viewPort_->addGeometry(geometry);
+  viewPort->addGeometry(geometry);
   ui->listWidget->addItem(QString(geometry->getName().c_str()));
 }
 
@@ -146,7 +144,7 @@ void MainWindow::addLineButton_clicked()
   else
     geometry = new geometries::Line(p1, p2, name.toStdString());
 
-  viewPort_->addGeometry(geometry);
+  viewPort->addGeometry(geometry);
   ui->listWidget->addItem(QString(geometry->getName().c_str()));
 }
 
@@ -183,7 +181,7 @@ void MainWindow::addPolygonButton_clicked()
     geometry = new geometries::Polygon(pointsToPolygon, name.toStdString());
 
   assert(pointsToPolygon.size() > 1);
-  viewPort_->addGeometry(geometry);
+  viewPort->addGeometry(geometry);
   ui->listWidget->addItem(QString(geometry->getName().c_str()));
   pointsToPolygon.clear();
 }
@@ -203,4 +201,12 @@ void MainWindow::connectButtons()
     this, &MainWindow::zoomInButton_clicked);
   connect(ui->zoomOutButton, &QPushButton::clicked,
     this, &MainWindow::zoomOutButton_clicked);
+  connect(ui->upButton, &QPushButton::clicked,
+    this, &MainWindow::upButton_clicked);
+  connect(ui->downButton, &QPushButton::clicked,
+    this, &MainWindow::downButton_clicked);
+  connect(ui->leftButton, &QPushButton::clicked,
+    this, &MainWindow::leftButton_clicked);
+  connect(ui->rightButton, &QPushButton::clicked,
+    this, &MainWindow::rightButton_clicked);
 }

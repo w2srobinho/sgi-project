@@ -2,6 +2,7 @@
 #define _INCLUDED_VIEWPORT_
 
 #include <QWidget>
+#include "point.h"
 
 class Window;
 
@@ -11,23 +12,26 @@ namespace geometries {
 
 class ViewPort : public QWidget
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    ViewPort(Window *window, QWidget *parent = nullptr);
-    ~ViewPort();
+  ViewPort(Window *window, QWidget *parent = nullptr);
+  ~ViewPort();
 
-    QSize minimumSizeHint() const Q_DECL_OVERRIDE;
-    QSize sizeHint() const Q_DECL_OVERRIDE;
+  QSize minimumSizeHint() const Q_DECL_OVERRIDE;
+  QSize sizeHint() const Q_DECL_OVERRIDE;
 
-    void addGeometry(geometries::Geometry *geometry);
-    void redraw();
+  void addGeometry(geometries::Geometry *geometry);
+  void redraw();
 
 protected:
-    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+  void resizeEvent(QResizeEvent *e) Q_DECL_OVERRIDE;
+  void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
 
 private:
-    Window *window_;
+  Window *window_;
+
+  geometries::Point minVpPoint, maxVpPoint;
 };
 
 #endif

@@ -33,6 +33,29 @@ namespace geometries {
     return z_;
   }
 
+  void Point::setX(float newX)
+  {
+    x_ = newX;
+  }
+
+  void Point::setY(float newY)
+  {
+    y_ = newY;
+  }
+
+  void Point::setZ(float newZ)
+  {
+    z_ = newZ;
+  }
+
+  Point& Point::operator*=(float number)
+  {
+    x_ *= number;
+    y_ *= number;
+    z_ *= number;
+    return *this;
+  }
+
   Point& Point::operator=(const Point& other)
   {
     if (this != &other) {

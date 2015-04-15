@@ -13,12 +13,15 @@ namespace geometries {
     const float& getY() const;
     const float& getZ() const;
 
+    void setX(float newX);
+    void setY(float newY);
+    void setZ(float newZ);
+
     Point& operator=(const Point& other);
+    Point& operator*=(float number);
 
   private:
-    float x_;
-    float y_;
-    float z_;
+    float x_, y_, z_;
   };
 }
 

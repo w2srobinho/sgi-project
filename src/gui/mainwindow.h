@@ -29,7 +29,6 @@ public:
 private:
   void showCriticalMessage(std::string message);
   void connectButtons();
-  void updateDisplayZoom();
 
 protected slots:
   void upButton_clicked();
@@ -51,8 +50,8 @@ protected slots:
 private:
   Ui::MainWindow *ui;
 
-  std::unique_ptr<ViewPort> viewPort_;
-  std::unique_ptr<Window> window_;
+  std::unique_ptr<ViewPort> viewPort;
+  std::unique_ptr<Window> window;
 
   std::vector<geometries::Point> pointsToPolygon;
 };
