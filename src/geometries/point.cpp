@@ -4,6 +4,11 @@ namespace geometries {
 
   Point::~Point()
   {}
+
+  Point::Point()
+    : Point(0, 0)
+  {
+  }
   
   Point::Point(float x, float y)
   : x_(x)

@@ -39,25 +39,25 @@ MainWindow::~MainWindow()
 
 void MainWindow::upButton_clicked()
 {
-  window->verticalMove(-RATE_TO_MOVE);
+  window->verticalMove(RATE_TO_MOVE);
   viewPort->redraw();
 }
 
 void MainWindow::downButton_clicked()
 {
-  window->verticalMove(RATE_TO_MOVE);
+  window->verticalMove(-RATE_TO_MOVE);
   viewPort->redraw();
 }
 
 void MainWindow::leftButton_clicked()
 {
-  window->horizontalMove(RATE_TO_MOVE);
+  window->horizontalMove(-RATE_TO_MOVE);
   viewPort->redraw();
 }
 
 void MainWindow::rightButton_clicked()
 {
-  window->horizontalMove(-RATE_TO_MOVE);
+  window->horizontalMove(RATE_TO_MOVE);
   viewPort->redraw();
 }
 

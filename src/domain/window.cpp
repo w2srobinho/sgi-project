@@ -44,12 +44,12 @@ void Window::horizontalMove(float rate)
 
 void Window::zoomIn()
 {
-  zoom(1.15f);
+  zoom(0.85f);
 }
 
 void Window::zoomOut()
 {
-  zoom(0.85f);
+  zoom(1.15f);
 }
 
 void Window::zoom(float factor)

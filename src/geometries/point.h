@@ -6,6 +6,7 @@ namespace geometries {
   {
   public:
     virtual ~Point();
+    Point();
     Point(float x, float y);
     Point(const Point& other);
 
