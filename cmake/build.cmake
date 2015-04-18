@@ -15,7 +15,8 @@ if(CMAKE_COMPILER_IS_GNUCXX)
   endif()
 endif()
 
-
+# enable file folders on generated visual studio projects
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 function(use_qt5_module _target) 
   foreach(plugin ${ARGN})

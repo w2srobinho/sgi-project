@@ -16,8 +16,8 @@ project(cg_project)
 #includes 
 CMAKE_POLICY(SET CMP0020 NEW)
 include(build)
-# Third_party
-# include(gmock)
+
+# third_party
 include(qt)
 
 # src
@@ -26,6 +26,3 @@ add_subdirectory(src/geometries)
 add_subdirectory(src/domain)
 add_subdirectory(src/gui)
 add_subdirectory(src/app)
-
-# tests
-
