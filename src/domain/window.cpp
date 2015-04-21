@@ -25,9 +25,14 @@ std::vector<geometries::Geometry*> Window::getGeometries() const
   return geometries_;
 }
 
-std::pair<geometries::Point, geometries::Point> Window::getWindowPoints() const
+const geometries::Point& Window::getMinPoint() const
 {
-  return std::pair<geometries::Point, geometries::Point> {minPoint, maxPoint};
+  return minPoint;
+}
+
+const geometries::Point& Window::getMaxPoint() const
+{
+  return maxPoint;
 }
 
 void Window::verticalMove(float rate)
@@ -55,26 +60,4 @@ void Window::zoomOut()
 void Window::zoom(float factor)
 {
   maxPoint *= factor;
-}
-
-geometries::Point Window::toViewPort(
-  const geometries::Point& pointOnWindow,
-  const geometries::Point& vpMinPoint, 
-  const geometries::Point& vpMaxPoint)
-{
-  /**
-  * Xvp = ((Xw - Xwmin) / (Xwmax - Xwmin)) * (Xvpmax - Xvpmin)
-  */
-  auto windowWidth = maxPoint.getX() - minPoint.getX();
-  auto viewPortWidth = vpMaxPoint.getX() - vpMinPoint.getX();
-  auto xvp = ((pointOnWindow.getX() - minPoint.getX()) / (windowWidth)) * viewPortWidth;
-    
-  /**
-  * Yvp = (1 - ((Yw - Ywmin) / (Ywmax - Ywmin))) * (Yvpmax - Yvpmin)
-  */
-  auto windowHeight = maxPoint.getY() - minPoint.getY();
-  auto viewPortHeight = vpMaxPoint.getY() - vpMinPoint.getY();
-  auto yvp = (1 - ((pointOnWindow.getY() - minPoint.getY()) / (windowHeight))) * viewPortHeight;
-  
-  return geometries::Point(xvp, yvp);
 }

@@ -20,6 +20,8 @@ public:
 
   QSize minimumSizeHint() const Q_DECL_OVERRIDE;
   QSize sizeHint() const Q_DECL_OVERRIDE;
+  
+  geometries::Point windowToViewport(const geometries::Point& pointOnWindow);
 
   void addGeometry(geometries::Geometry *geometry);
   void redraw();

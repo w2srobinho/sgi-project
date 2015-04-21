@@ -17,6 +17,8 @@ ViewPort::~ViewPort()
 ViewPort::ViewPort(Window *window, QWidget *parent)
     : QWidget(parent)
     , window_(window)
+    , minVpPoint(geometries::Point(0, 0))
+    , maxVpPoint(geometries::Point(0, 0))
 {
   setBackgroundRole(QPalette::Base);
   setAutoFillBackground(true);    
@@ -30,6 +32,25 @@ QSize ViewPort::minimumSizeHint() const
 QSize ViewPort::sizeHint() const
 {
     return QSize(400, 200);
+}
+
+geometries::Point ViewPort::windowToViewport(const geometries::Point& pointOnWindow)
+{
+  /**
+  * Xvp = ((Xw - Xwmin) / (Xwmax - Xwmin)) * (Xvpmax - Xvpmin)
+  */
+  auto windowWidth = window_->getMaxPoint().getX() - window_->getMinPoint().getX();
+  auto viewPortWidth = width()/*maxVpPoint.getX() - minVpPoint.getX()*/;
+  auto xvp = ((pointOnWindow.getX() - window_->getMinPoint().getX()) / (windowWidth)) * viewPortWidth;
+
+  /**
+  * Yvp = (1 - ((Yw - Ywmin) / (Ywmax - Ywmin))) * (Yvpmax - Yvpmin)
+  */
+  auto windowHeight = window_->getMaxPoint().getY() - window_->getMinPoint().getY();
+  auto viewPortHeight = height()/*maxVpPoint.getY() - minVpPoint.getY()*/;
+  auto yvp = (1 - ((pointOnWindow.getY() - window_->getMinPoint().getY()) / (windowHeight))) * viewPortHeight;
+
+  return geometries::Point(xvp, yvp);
 }
 
 void ViewPort::addGeometry(geometries::Geometry *geometry)
@@ -58,15 +79,15 @@ void ViewPort::paintEvent(QPaintEvent *)
       {
         case geometries::POINT:
         {
-          auto point = window_->toViewPort(geometry->getPoints().at(0), minVpPoint, maxVpPoint);
+          auto point = windowToViewport(geometry->getPoints().at(0));
           painter.drawPoint(QPointF(point.getX(), point.getY()));
           break;
         }
         case geometries::LINE:
         {
           auto pointAtLine = geometry->getPoints();
-          auto p0 = window_->toViewPort(pointAtLine.at(0), minVpPoint, maxVpPoint);
-          auto p1 = window_->toViewPort(pointAtLine.at(1), minVpPoint, maxVpPoint);
+          auto p0 = windowToViewport(pointAtLine.at(0));
+          auto p1 = windowToViewport(pointAtLine.at(1));
 
           painter.drawLine(QPointF(p0.getX(), p0.getY()), QPointF(p1.getX(), p1.getY()));
           break;
@@ -76,7 +97,7 @@ void ViewPort::paintEvent(QPaintEvent *)
           QPolygonF polygonQt;
           for (auto point : geometry->getPoints())
           {
-            auto vpPoint = window_->toViewPort(point, minVpPoint, maxVpPoint);
+            auto vpPoint = windowToViewport(point);
             polygonQt << QPointF(vpPoint.getX(), vpPoint.getY());
           }
           painter.drawPolygon(polygonQt);

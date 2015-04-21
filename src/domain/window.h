@@ -16,12 +16,9 @@ public:
   Window(const geometries::Point& min, const geometries::Point& max);
 
   std::vector<geometries::Geometry*> getGeometries() const;
-  std::pair<geometries::Point, geometries::Point> getWindowPoints() const;
 
-  geometries::Point toViewPort(
-    const geometries::Point& pointOnWindow,
-    const geometries::Point& vpMinPoint,
-    const geometries::Point& vpMaxPoint);
+  const geometries::Point& getMinPoint() const;
+  const geometries::Point& getMaxPoint() const;
   
   void addGeometry(geometries::Geometry *shape);
   void verticalMove(float rate);
