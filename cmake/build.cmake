@@ -65,3 +65,13 @@ macro(USE_QT5_MODULES _target)
   endforeach() 
   use_qt5_module(${_target} ${ARGN}) 
 endmacro()
+
+# ADD_TEST(_target ARGS): Add target to run on ctest command.
+macro(ADD_TEST _target)
+  add_test(NAME ${_target}
+           WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIR}
+           COMMAND ${_target}
+           #--gtest_output=xml:${CMAKE_BINARY_DIR}/Reports/tests/${_target}.xml
+           ${ARGN}
+          )
+endmacro()

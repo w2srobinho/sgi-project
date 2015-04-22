@@ -4,6 +4,7 @@
 
 #include <QPainter>
 #include <QResizeEvent>
+#include "..\domain\transform.h"
 
 namespace {
   const int OFFSET_TO_VP = 10;

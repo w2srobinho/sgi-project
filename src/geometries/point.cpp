@@ -3,24 +3,36 @@
 namespace geometries {
 
   Point::~Point()
-  {}
+  {
+  
+  }
 
   Point::Point()
     : Point(0, 0)
   {
+
   }
   
   Point::Point(float x, float y)
   : x_(x)
   , y_(y)
-  , z_(0)
-  {}
+  , z_(1)
+  {
+  
+  }
 
   Point::Point(const Point& other)
     : x_(other.getX())
     , y_(other.getY())
     , z_(other.getZ())
   {
+
+  }
+
+  Point::Point(std::vector<float> point)
+    : Point(point.at(0), point.at(1))
+  {
+    
   }
 
   const float& Point::getX() const
@@ -36,6 +48,11 @@ namespace geometries {
   const float& Point::getZ() const
   {
     return z_;
+  }
+
+  std::vector<float> Point::get() const
+  {
+    return {x_, y_, z_};
   }
 
   void Point::setX(float newX)
