@@ -7,7 +7,7 @@ namespace geometries {
   Line::~Line()
   {}
 
-  Line::Line(const std::initializer_list<Point> &points)
+  Line::Line(const std::vector<Point>& points)
     : Line(points, "Line")
   {
   }
@@ -46,7 +46,7 @@ namespace geometries {
 
   shape Line::type() const
   {
-    return LINE;
+    return POLYGON;
   }
 
   const std::string& Line::getName() const

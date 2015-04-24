@@ -9,7 +9,7 @@
 namespace geometries {
 
   static int geoNumber = 0;
-  enum shape {POINT, LINE, POLYGON};
+  enum shape { POLYGON };
 
   class Geometry
   {

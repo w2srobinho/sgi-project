@@ -76,32 +76,38 @@ void ViewPort::paintEvent(QPaintEvent *)
     
     for (auto geometry : window_->getGeometries()) 
     {  
-      switch (geometry->type()) 
+      switch (geometry->type())
       {
-        case geometries::POINT:
-        {
-          auto point = windowToViewport(geometry->getPoints().at(0));
-          painter.drawPoint(QPointF(point.getX(), point.getY()));
-          break;
-        }
-        case geometries::LINE:
-        {
-          auto pointAtLine = geometry->getPoints();
-          auto p0 = windowToViewport(pointAtLine.at(0));
-          auto p1 = windowToViewport(pointAtLine.at(1));
-
-          painter.drawLine(QPointF(p0.getX(), p0.getY()), QPointF(p1.getX(), p1.getY()));
-          break;
-        }
         case geometries::POLYGON:
         {
-          QPolygonF polygonQt;
-          for (auto point : geometry->getPoints())
+          switch (geometry->getPoints().size())
           {
-            auto vpPoint = windowToViewport(point);
-            polygonQt << QPointF(vpPoint.getX(), vpPoint.getY());
+            case 1:
+            {
+              auto point = windowToViewport(geometry->getPoints().at(0));
+              painter.drawPoint(QPointF(point.getX(), point.getY()));
+              break;
+            }
+            case 2:
+            {
+              auto pointAtLine = geometry->getPoints();
+              auto p0 = windowToViewport(pointAtLine.at(0));
+              auto p1 = windowToViewport(pointAtLine.at(1));
+
+              painter.drawLine(QPointF(p0.getX(), p0.getY()), QPointF(p1.getX(), p1.getY()));
+              break;
+            }
+            default:
+            {
+              QPolygonF polygonQt;
+              for (auto point : geometry->getPoints())
+              {
+                auto vpPoint = windowToViewport(point);
+                polygonQt << QPointF(vpPoint.getX(), vpPoint.getY());
+              }
+              painter.drawPolygon(polygonQt);
+            }
           }
-          painter.drawPolygon(polygonQt);
         }
       }
       painter.restore();

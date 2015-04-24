@@ -34,7 +34,7 @@ namespace geometries {
   }
 
   std::vector<Point> Polygon::getPoints() const
-{
+  {
     return points_;
   }
 

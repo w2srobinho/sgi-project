@@ -1,5 +1,4 @@
 #include "conversions.h"
-#include "graphicPoint.h"
 #include "line.h"
 #include "mainwindow.h"
 #include "point.h"
@@ -86,7 +85,6 @@ void MainWindow::zoomOutButton_clicked()
 
 void MainWindow::addPointButton_clicked()
 {
-  assert(pointsToPolygon.size() > 1);
   auto x = ui->pointEditX->text();
   auto y = ui->pointEditY->text();
 
@@ -98,12 +96,14 @@ void MainWindow::addPointButton_clicked()
   }
 
   auto name = ui->pointName->text();
+
   geometries::Geometry * geometry;
+  geometries::Point point(x.toFloat(), y.toFloat());
 
   if (name.isEmpty())
-    geometry = new geometries::GraphicPoint(x.toFloat(), y.toFloat());
+    geometry = new geometries::Polygon(std::vector<geometries::Point>{point});
   else {
-    geometry = new geometries::GraphicPoint(x.toFloat(), y.toFloat(), name.toStdString());
+    geometry = new geometries::Polygon(std::vector<geometries::Point>{point}, name.toStdString());
   }
 
   viewPort->addGeometry(geometry);
@@ -141,7 +141,7 @@ void MainWindow::addLineButton_clicked()
   geometries::Geometry *geometry;
 
   if (name.isEmpty())
-    geometry = new geometries::Line({ p1, p2 });
+    geometry = new geometries::Line(std::vector<geometries::Point>{ p1, p2 });
   else
     geometry = new geometries::Line(p1, p2, name.toStdString());
 

@@ -12,7 +12,7 @@ namespace geometries {
   {
   public:
     ~Line();
-    Line(const std::initializer_list<Point>& points);
+    Line(const std::vector<Point>& points);
     Line(float x1, float y1, float x2, float y2, const std::string& name);
     Line(const Point& p1, const Point& p2, const std::string& name);
     Line(const std::vector<Point>& points, const std::string& name);
