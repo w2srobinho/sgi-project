@@ -3,6 +3,9 @@
 #include "gmock/gmock.h"
 #include "point.h"
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 TEST(transformTests, translation) {
   geometries::Point p(1, 3);
   float dx = -3.0;
@@ -25,6 +28,20 @@ TEST(transformTests, scaling)
 
   std::vector<float> expected = { 2.0, 2.5, 1.0 };
   auto pointTransformed = transform::scaling(p.get(), sx, sy);
+
+  for (std::size_t i = 0; i < pointTransformed.get().size(); ++i)
+  {
+    ASSERT_NEAR(expected.at(i), pointTransformed.get().at(i), 0.01);
+  }
+}
+
+TEST(transformTests, rotate)
+{
+  float angle = M_PI / 6;
+  geometries::Point p(2.0, 2.5);
+
+  std::vector<float> expected = { 2.98f, 1.16f, 1.0 };
+  auto pointTransformed = transform::rotate(p.get(), angle);
 
   for (std::size_t i = 0; i < pointTransformed.get().size(); ++i)
   {
