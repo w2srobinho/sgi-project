@@ -1,12 +1,13 @@
 #include "transform.h"
 
-#include "gmock/gmock.h"
+#include <gtest/gtest.h>
 #include "point.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-TEST(transformTests, translation) {
+TEST(transformTests, translation) 
+{
   geometries::Point p(1, 3);
   float dx = -3.0;
   float dy = 2.0;
@@ -37,7 +38,7 @@ TEST(transformTests, scaling)
 
 TEST(transformTests, rotate)
 {
-  float angle = M_PI / 6;
+  float angle = static_cast<float>(M_PI / 6);
   geometries::Point p(2.0, 2.5);
 
   std::vector<float> expected = { 2.98f, 1.16f, 1.0 };

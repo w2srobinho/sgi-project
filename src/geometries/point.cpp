@@ -70,17 +70,48 @@ namespace geometries {
     z_ = newZ;
   }
 
+  bool Point::equals(const Point& other, float epsilon) const
+  {
+    return !((abs(x_ - other.getX()) > epsilon) ||
+            (abs(y_ - other.getY()) > epsilon) ||
+            (abs(z_ - other.getZ()) > epsilon));
+  }
+
+  bool Point::operator<(const Point& other) const
+  {
+
+    return x_ < other.getX() && y_ < other.getY();
+  }
+
+  bool Point::operator>(const Point& other) const
+  {
+
+    return (other < *this);
+  }
+
+  bool Point::operator!=(const Point& other) const
+  {
+
+    return !(*this == other);
+  }
+
+  bool Point::operator==(const Point& other) const
+  {
+    const float EPSILON = 0.01f;
+    return equals(other, EPSILON);
+  }
+
   Point& Point::operator*=(float number)
   {
     x_ *= number;
     y_ *= number;
-    z_ *= number;
     return *this;
   }
 
   Point& Point::operator=(const Point& other)
   {
-    if (this != &other) {
+    if (this != &other) 
+    {
       x_ = other.getX();
       y_ = other.getY();
       z_ = other.getZ();

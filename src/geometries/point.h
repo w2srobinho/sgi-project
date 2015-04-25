@@ -23,6 +23,13 @@ namespace geometries {
     void setY(float newY);
     void setZ(float newZ);
 
+    bool equals(const Point& other, float epison) const;
+
+    bool operator==(const Point& other) const;
+    bool operator!=(const Point& other) const;
+    bool operator< (const Point& other) const;
+    bool operator> (const Point& other) const;
+
     Point& operator=(const Point& other);
     Point& operator*=(float number);
 
@@ -30,5 +37,6 @@ namespace geometries {
     float x_, y_, z_;
   };
 }
+
 
 #endif

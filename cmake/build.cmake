@@ -71,7 +71,6 @@ macro(ADD_TEST _target)
   add_test(NAME ${_target}
            WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIR}
            COMMAND ${_target}
-           #--gtest_output=xml:${CMAKE_BINARY_DIR}/Reports/tests/${_target}.xml
            ${ARGN}
           )
 endmacro()
