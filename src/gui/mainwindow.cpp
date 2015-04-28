@@ -30,6 +30,10 @@ MainWindow::MainWindow(QWidget *parent)
   window = std::make_unique<Window>(geometries::Point(10.0, 5.0), geometries::Point(40.0, 30.0));
   viewPort = std::make_unique<ViewPort>(window.get(), ui->groupBox);
   ui->verticalLayout_3->addWidget(viewPort.get());
+  ui->rotatePointX->setEnabled(false);
+  ui->rotatePointY->setEnabled(false);
+  ui->listWidget->setSelectionMode(QAbstractItemView::SingleSelection);
+  hasNotGeometry();
 }
 
 MainWindow::~MainWindow()
@@ -63,12 +67,51 @@ void MainWindow::rightButton_clicked()
 
 void MainWindow::leftRotateButton_clicked()
 {
+  float angle = ui->angleSpinBox->text().toFloat();
+  auto currentItem = ui->listWidget->currentItem();   
 
+  if (!currentItem)
+    return;
+  
+  auto geometryName = currentItem->text().toStdString();
+
+  if (ui->rb_origin->isChecked())
+  {
+    window->rotateOrigin(geometryName, angle);
+  }
+  else if (ui->rb_world->isChecked())
+  {
+    window->rotateWindow(geometryName, angle);
+  }
+  else
+  {
+    float rotateX = ui->rotatePointX->text().toFloat();
+    float rotateY = ui->rotatePointY->text().toFloat();
+    window->rotatePoint(geometryName, geometries::Point(rotateX, rotateY), angle);
+  }
+  viewPort->redraw();
 }
 
 void MainWindow::rightRotateButton_clicked()
 {
+  float angle = 360.f - ui->angleSpinBox->text().toFloat();
+  auto geometryName = ui->listWidget->currentItem()->text().toStdString();
 
+  if (ui->rb_origin->isChecked())
+  {
+    window->rotateOrigin(geometryName, angle);
+  }
+  else if (ui->rb_world->isChecked())
+  {
+    window->rotateWindow(geometryName, angle);
+  }
+  else
+  {
+    float rotateX = ui->rotatePointX->text().toFloat();
+    float rotateY = ui->rotatePointY->text().toFloat();
+    window->rotatePoint(geometryName, geometries::Point(rotateX, rotateY), angle);
+  }
+  viewPort->redraw();
 }
 
 void MainWindow::zoomInButton_clicked()
@@ -95,19 +138,21 @@ void MainWindow::addPointButton_clicked()
     return;
   }
 
-  auto name = ui->pointName->text();
+  auto name = ui->pointName->text().toStdString();
 
   geometries::Geometry * geometry;
   geometries::Point point(x.toFloat(), y.toFloat());
 
-  if (name.isEmpty())
+  if (name.empty())
     geometry = new geometries::Polygon(std::vector<geometries::Point>{point});
   else {
-    geometry = new geometries::Polygon(std::vector<geometries::Point>{point}, name.toStdString());
+    geometry = new geometries::Polygon(std::vector<geometries::Point>{point}, name);
   }
 
   viewPort->addGeometry(geometry);
   ui->listWidget->addItem(QString(geometry->getName().c_str()));
+  
+  haveGeometry();
 }
 
 void MainWindow::showCriticalMessage(std::string message)
@@ -134,19 +179,21 @@ void MainWindow::addLineButton_clicked()
     return;
   }
 
-  auto name = ui->LineName->text();
+  auto name = ui->LineName->text().toStdString();
   geometries::Point p1(ptoX1.toFloat(), ptoY1.toFloat());
   geometries::Point p2(ptoX2.toFloat(), ptoY2.toFloat());
 
   geometries::Geometry *geometry;
 
-  if (name.isEmpty())
+  if (name.empty())
     geometry = new geometries::Line(std::vector<geometries::Point>{ p1, p2 });
   else
-    geometry = new geometries::Line(p1, p2, name.toStdString());
+    geometry = new geometries::Line(p1, p2, name);
 
   viewPort->addGeometry(geometry);
   ui->listWidget->addItem(QString(geometry->getName().c_str()));
+ 
+  haveGeometry();
 }
 
 
@@ -165,6 +212,8 @@ void MainWindow::addPointOnPolygonButton_clicked()
   pointsToPolygon.push_back(geometries::Point(x.toFloat(), y.toFloat()));
   ui->polygonEditX->setText("");
   ui->polygonEditY->setText("");
+  
+  haveGeometry();
 }
 
 
@@ -173,23 +222,25 @@ void MainWindow::addPolygonButton_clicked()
   if (!ui->polygonEditX->text().isEmpty())
     addPointOnPolygonButton_clicked();
 
-  auto name = ui->polygonName->text();
+  auto name = ui->polygonName->text().toStdString();
   geometries::Geometry * geometry;
 
-  if (name.isEmpty())
+  if (name.empty())
     geometry = new geometries::Polygon(pointsToPolygon);
   else
-    geometry = new geometries::Polygon(pointsToPolygon, name.toStdString());
+    geometry = new geometries::Polygon(pointsToPolygon, name);
 
   assert(pointsToPolygon.size() > 1);
   viewPort->addGeometry(geometry);
   ui->listWidget->addItem(QString(geometry->getName().c_str()));
   pointsToPolygon.clear();
+ 
+  ui->tabWidget_2->setEnabled(true);
 }
 
 void MainWindow::connectButtons()
 {
-  ui->rotateEdit->setEnabled(false);
+  /* connect buttons to insert geometry */
   connect(ui->addPointButton, &QPushButton::clicked,
     this, &MainWindow::addPointButton_clicked);
   connect(ui->addLineButton, &QPushButton::clicked,
@@ -198,10 +249,14 @@ void MainWindow::connectButtons()
     this, &MainWindow::addPointOnPolygonButton_clicked);
   connect(ui->addPolygonButton, &QPushButton::clicked,
     this, &MainWindow::addPolygonButton_clicked);
+
+  /* connect zoom buttons */
   connect(ui->zoomInButton, &QPushButton::clicked,
     this, &MainWindow::zoomInButton_clicked);
   connect(ui->zoomOutButton, &QPushButton::clicked,
     this, &MainWindow::zoomOutButton_clicked);
+
+  /* connect move window buttons */
   connect(ui->upButton, &QPushButton::clicked,
     this, &MainWindow::upButton_clicked);
   connect(ui->downButton, &QPushButton::clicked,
@@ -210,4 +265,23 @@ void MainWindow::connectButtons()
     this, &MainWindow::leftButton_clicked);
   connect(ui->rightButton, &QPushButton::clicked,
     this, &MainWindow::rightButton_clicked);
+
+  /* connect rotate buttons */
+  connect(ui->leftRotateButton, &QPushButton::clicked,
+    this, &MainWindow::leftRotateButton_clicked);
+  connect(ui->rightRotateButton, &QPushButton::clicked,
+    this, &MainWindow::rightRotateButton_clicked);
+}
+
+void MainWindow::hasNotGeometry()
+{
+  ui->tabWidget_2->setEnabled(false);
+  ui->listWidget->setEnabled(false);
+}
+
+void MainWindow::haveGeometry()
+{
+  ui->tabWidget_2->setEnabled(true);
+  ui->listWidget->setEnabled(true);
+  ui->rb_origin->setChecked(true);
 }

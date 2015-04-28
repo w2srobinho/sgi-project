@@ -12,30 +12,30 @@ namespace geometries {
   }
 
   Polygon::Polygon(const std::vector<Point>& points, const std::string& name)
-    : points_(points)
-    , name_(generateUniqueName(name))
+    : _points(points)
+    , _name(generateUniqueName(name))
   {
 
   }
 
   std::vector<Point>::const_iterator Polygon::begin() const
   {
-    return points_.begin();
+    return _points.begin();
   }
 
   std::vector<Point>::const_iterator Polygon::end() const
   {
-    return points_.end();
+    return _points.end();
   }
 
-  Point Polygon::center()
-  {
+  Point Polygon::center() const
+{
     return Point(0, 0);
   }
 
   std::vector<Point> Polygon::getPoints() const
   {
-    return points_;
+    return _points;
   }
 
   shape Polygon::type() const
@@ -45,7 +45,16 @@ namespace geometries {
 
   const std::string& Polygon::getName() const
   {
-    return name_;
+    return _name;
+  }
+
+  Geometry& Polygon::operator*=(const Point& point)
+  {
+    for (auto &p : _points)
+    {
+      p *= point;
+    }
+    return *this;
   }
 
 }

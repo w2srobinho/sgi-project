@@ -1,6 +1,7 @@
 #include "window.h"
 
 #include <memory>
+#include "transform.h"
 
 Window::~Window()
 {
@@ -15,14 +16,14 @@ Window::Window(const geometries::Point& min, const geometries::Point& max)
 
 void Window::addGeometry(geometries::Geometry *element)
 {
-  geometries_.push_back(element);
+  _geometries.push_back(element);
   displayFile.insert({ element->getName(), element });
   cleanUp.push_back(std::unique_ptr<geometries::Geometry>(element));
 }
 
 std::vector<geometries::Geometry*> Window::getGeometries() const
 {
-  return geometries_;
+  return _geometries;
 }
 
 const geometries::Point& Window::getMinPoint() const
@@ -47,6 +48,14 @@ void Window::horizontalMove(float rate)
   maxPoint.setX(maxPoint.getX() + rate);
 }
 
+geometries::Point Window::center() const
+{
+  float x = ((maxPoint.getX() - minPoint.getX()) / 2);
+  float y = ((maxPoint.getY() - minPoint.getY()) / 2);
+
+  return geometries::Point(x, y);
+}
+
 void Window::zoomIn()
 {
   zoom(0.85f);
@@ -60,4 +69,31 @@ void Window::zoomOut()
 void Window::zoom(float factor)
 {
   maxPoint *= factor;
+}
+
+void Window::rotateOrigin(const std::string& geometryName, float angle)
+{
+  auto transformPoint = transform::rotate(minPoint, angle);
+  auto geometry = displayFile[geometryName];
+
+  *geometry *= transformPoint;
+}
+
+void Window::rotateWindow(const std::string& geometryName, float angle)
+{
+  auto transformPoint = transform::rotate(center(), angle);
+  auto geometry = displayFile[geometryName];
+
+  *geometry *= transformPoint;
+}
+
+void Window::rotatePoint(
+  const std::string& geometryName, 
+  const geometries::Point& rotatePoint, 
+  float angle)
+{
+  auto transformPoint = transform::rotate(rotatePoint, angle);
+  auto geometry = displayFile[geometryName];
+
+  *geometry *= transformPoint;
 }

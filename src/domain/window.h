@@ -23,6 +23,10 @@ public:
   void addGeometry(geometries::Geometry *shape);
   void verticalMove(float rate);
   void horizontalMove(float rate);
+  void rotateOrigin(const std::string& geometryName, float angle);
+  void rotateWindow(const std::string& geometryName, float angle);
+  void rotatePoint(const std::string& geometryName, const geometries::Point& rotatePoint, float angle);
+  geometries::Point center() const;
   void zoomIn();
   void zoomOut();
 
@@ -32,7 +36,7 @@ private:
 private:
   geometries::Point minPoint, maxPoint;
 
-  std::vector<geometries::Geometry*> geometries_;
+  std::vector<geometries::Geometry*> _geometries;
   std::unordered_map<std::string, geometries::Geometry*> displayFile;
   std::vector<std::unique_ptr<geometries::Geometry>> cleanUp;
 };

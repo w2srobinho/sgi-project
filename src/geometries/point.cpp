@@ -14,17 +14,17 @@ namespace geometries {
   }
   
   Point::Point(float x, float y)
-  : x_(x)
-  , y_(y)
-  , z_(1)
+  : _x(x)
+  , _y(y)
+  , _z(1)
   {
   
   }
 
   Point::Point(const Point& other)
-    : x_(other.getX())
-    , y_(other.getY())
-    , z_(other.getZ())
+    : _x(other.getX())
+    , _y(other.getY())
+    , _z(other.getZ())
   {
 
   }
@@ -37,56 +37,64 @@ namespace geometries {
 
   const float& Point::getX() const
   {
-    return x_;
+    return _x;
   }
 
   const float& Point::getY() const
   {
-    return y_;
+    return _y;
   }
 
   const float& Point::getZ() const
   {
-    return z_;
+    return _z;
   }
 
   std::vector<float> Point::get() const
   {
-    return {x_, y_, z_};
+    return {_x, _y, _z};
   }
 
   void Point::setX(float newX)
   {
-    x_ = newX;
+    _x = newX;
   }
 
   void Point::setY(float newY)
   {
-    y_ = newY;
+    _y = newY;
   }
 
   void Point::setZ(float newZ)
   {
-    z_ = newZ;
+    _z = newZ;
   }
 
   bool Point::equals(const Point& other, float epsilon) const
   {
-    return !((abs(x_ - other.getX()) > epsilon) ||
-            (abs(y_ - other.getY()) > epsilon) ||
-            (abs(z_ - other.getZ()) > epsilon));
+    return !((abs(_x - other.getX()) > epsilon) ||
+            (abs(_y - other.getY()) > epsilon) ||
+            (abs(_z - other.getZ()) > epsilon));
   }
 
   bool Point::operator<(const Point& other) const
   {
 
-    return x_ < other.getX() && y_ < other.getY();
+    return _x < other.getX() && _y < other.getY();
   }
 
   bool Point::operator>(const Point& other) const
   {
 
     return (other < *this);
+  }
+
+  Point& Point::operator*=(const Point& other)
+  {
+    _x *= other.getX();
+    _y *= other.getY();
+    _z *= other.getZ();
+    return *this;
   }
 
   bool Point::operator!=(const Point& other) const
@@ -103,8 +111,8 @@ namespace geometries {
 
   Point& Point::operator*=(float number)
   {
-    x_ *= number;
-    y_ *= number;
+    _x *= number;
+    _y *= number;
     return *this;
   }
 
@@ -112,9 +120,9 @@ namespace geometries {
   {
     if (this != &other) 
     {
-      x_ = other.getX();
-      y_ = other.getY();
-      z_ = other.getZ();
+      _x = other.getX();
+      _y = other.getY();
+      _z = other.getZ();
     }
     return *this;
   }

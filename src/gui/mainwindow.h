@@ -29,6 +29,8 @@ public:
 private:
   void showCriticalMessage(std::string message);
   void connectButtons();
+  void hasNotGeometry();
+  void haveGeometry();
 
 protected slots:
   void upButton_clicked();

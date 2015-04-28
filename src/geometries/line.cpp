@@ -18,30 +18,30 @@ namespace geometries {
   }
 
   Line::Line(const std::vector<Point> &points, const std::string& name)
-    : points_(points)
-    , name_(generateUniqueName(name))
+    : _points(points)
+    , _name(generateUniqueName(name))
   {
   }
 
   const Point& Line::getP1() const
   {
-    return points_.at(0);
+    return _points.at(0);
   }
 
   const Point& Line::getP2() const
   {
-    return points_.at(1);
+    return _points.at(1);
   }
 
-  Point Line::center()
-  {
+  Point Line::center() const
+{
     return Point(0, 0);
   }
 
   std::vector<Point> Line::getPoints() const
   {
-    assert(points_.size() == 2);
-    return points_;
+    assert(_points.size() == 2);
+    return _points;
   }
 
   shape Line::type() const
@@ -51,7 +51,16 @@ namespace geometries {
 
   const std::string& Line::getName() const
   {
-    return name_;
+    return _name;
+  }
+
+  Geometry& Line::operator*=(const Point& point)
+  {
+    for (auto &p : _points)
+    {
+      p *= point;
+    }
+    return *this;
   }
 
 }

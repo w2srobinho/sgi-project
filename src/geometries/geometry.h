@@ -16,10 +16,12 @@ namespace geometries {
   public:
     virtual ~Geometry() {}
 
-    virtual Point center() = 0;
+    virtual Point center() const = 0;
     virtual shape type() const = 0;
     virtual std::vector<Point> getPoints() const = 0;
     virtual const std::string& getName() const = 0;
+
+    virtual Geometry& operator*=(const Point& point) = 0;
 
   protected:
     std::string generateUniqueName(const std::string& name)
@@ -27,6 +29,7 @@ namespace geometries {
       return name + "-" + std::to_string(++geoNumber);
     }
   };
+
 }
 
 #endif
