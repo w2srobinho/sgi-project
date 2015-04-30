@@ -40,11 +40,7 @@ function(use_qt5_module _target)
         get_filename_component(plugin_type ${module_folder} NAME)
       endif()
       
-      #if(ALL_DYN_LINK)
-      #  file(COPY ${module_location} DESTINATION "${CMAKE_BINARY_DIR}/bin/${configuration}/${plugin_type}")
-      #else()
-        file(COPY ${module_location} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/${configuration}/${plugin_type}")
-      #endif()
+      file(COPY ${module_location} DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/${configuration}/${plugin_type}")
 
       if(module_dependencies)
         use_qt5_module(${_target} ${module_dependencies})

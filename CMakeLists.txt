@@ -12,6 +12,7 @@ set(CMAKE_MODULE_PATH
 include(init)
 
 project(cg_project)
+enable_testing()
 
 #includes 
 CMAKE_POLICY(SET CMP0020 NEW)
@@ -21,7 +22,6 @@ include(build)
 include(qt)
 include(gmock)
 
-enable_testing()
 
 # src
 add_subdirectory(src/utils)

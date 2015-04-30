@@ -27,8 +27,8 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
   connectButtons();
   
-  window = std::make_unique<Window>(geometries::Point(10.0, 5.0), geometries::Point(40.0, 30.0));
-  viewPort = std::make_unique<ViewPort>(window.get(), ui->groupBox);
+  window.reset(new Window(geometries::Point(10.0, 5.0), geometries::Point(40.0, 30.0)));
+  viewPort.reset(new ViewPort(window.get(), ui->groupBox));
   ui->verticalLayout_3->addWidget(viewPort.get());
   ui->rotatePointX->setEnabled(false);
   ui->rotatePointY->setEnabled(false);

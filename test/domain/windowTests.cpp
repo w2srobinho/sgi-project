@@ -9,7 +9,7 @@ class WindowTests : public testing::Test
 protected:
   void SetUp() override
   {
-    window = std::make_unique<Window>(geometries::Point(0, 0), geometries::Point(50, 50));
+    window.reset(new Window(geometries::Point(0, 0), geometries::Point(50, 50)));
   }
 
   std::unique_ptr<Window> window;

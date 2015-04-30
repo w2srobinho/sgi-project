@@ -1,5 +1,7 @@
 #include "point.h"
 
+#include <cmath>
+
 namespace geometries {
 
   Point::~Point()
@@ -72,9 +74,9 @@ namespace geometries {
 
   bool Point::equals(const Point& other, float epsilon) const
   {
-    return !((abs(_x - other.getX()) > epsilon) ||
-            (abs(_y - other.getY()) > epsilon) ||
-            (abs(_z - other.getZ()) > epsilon));
+    return !((std::abs(_x - other.getX()) > epsilon) ||
+            (std::abs(_y - other.getY()) > epsilon) ||
+            (std::abs(_z - other.getZ()) > epsilon));
   }
 
   bool Point::operator<(const Point& other) const
