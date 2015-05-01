@@ -91,11 +91,10 @@ namespace geometries {
     return (other < *this);
   }
 
-  Point& Point::operator*=(const Point& other)
+  Point& Point::operator+=(const Point& other)
   {
-    _x *= other.getX();
-    _y *= other.getY();
-    _z *= other.getZ();
+    _x += other.getX();
+    _y += other.getY();
     return *this;
   }
 

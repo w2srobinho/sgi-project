@@ -1,7 +1,9 @@
 #include "window.h"
 
-#include <memory>
 #include "transform.h"
+
+#include <cassert>
+#include <memory>
 
 Window::~Window()
 {
@@ -71,12 +73,19 @@ void Window::zoom(float factor)
   maxPoint *= factor;
 }
 
+void Window::translateGeometry(const std::string& geometryName, float dx, float dy)
+{
+  assert(!displayFile.empty());
+  auto geometry = displayFile[geometryName];
+  transform::translation(geometry, dx, dy);
+}
+
 void Window::rotateOrigin(const std::string& geometryName, float angle)
 {
   auto transformPoint = transform::rotate(minPoint, angle);
   auto geometry = displayFile[geometryName];
 
-  *geometry *= transformPoint;
+  //*geometry *= transformPoint;
 }
 
 void Window::rotateWindow(const std::string& geometryName, float angle)
@@ -84,7 +93,7 @@ void Window::rotateWindow(const std::string& geometryName, float angle)
   auto transformPoint = transform::rotate(center(), angle);
   auto geometry = displayFile[geometryName];
 
-  *geometry *= transformPoint;
+  //*geometry *= transformPoint;
 }
 
 void Window::rotatePoint(
@@ -95,5 +104,5 @@ void Window::rotatePoint(
   auto transformPoint = transform::rotate(rotatePoint, angle);
   auto geometry = displayFile[geometryName];
 
-  *geometry *= transformPoint;
+  //*geometry *= transformPoint;
 }

@@ -31,7 +31,7 @@ namespace geometries {
     bool operator> (const Point& other) const;
 
     Point& operator=(const Point& other);
-    Point& operator*=(const Point& other);
+    Point& operator+=(const Point& other);
     Point& operator*=(float number);
 
   private:

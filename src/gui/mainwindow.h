@@ -49,13 +49,15 @@ protected slots:
   void addPointOnPolygonButton_clicked();
   void addPolygonButton_clicked();
 
+  void applyTranslate_clicked();
+
 private:
   Ui::MainWindow *ui;
 
   std::unique_ptr<ViewPort> viewPort;
   std::unique_ptr<Window> window;
 
-  std::vector<geometries::Point> pointsToPolygon;
+  std::vector<geometries::Point*> pointsToPolygon;
 };
 
 #endif

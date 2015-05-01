@@ -9,6 +9,7 @@
 namespace transform
 {
   geometries::Point translation(const geometries::Point& point, float dx, float dy);
+  void translation(geometries::Geometry* geometry, float dx, float dy);
 
   geometries::Point scaling(const geometries::Point& point, float sx, float sy);
 
