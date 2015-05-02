@@ -52,6 +52,22 @@ namespace transform
     return pNew;
   }
 
+  void scaling(geometries::Geometry* geometry, float sx, float sy)
+  {    
+    auto centerGeometry = geometry->center();
+    auto dx = centerGeometry.getX();
+    auto dy = centerGeometry.getY();
+
+    translation(geometry, -dx, -dy); // translate to center by center Geometry
+        
+    for (auto point : geometry->getPoints())
+    {
+      *point = scaling(*point, sx, sy);
+    }
+
+    translation(geometry, dx, dy); // return to original center Geometry
+  }
+
   geometries::Point rotate(const geometries::Point& point, float angle)
   {
     std::vector<std::vector<float>> T = { { std::cos(angle), -std::sin(angle), 0 },

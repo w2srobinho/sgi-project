@@ -12,6 +12,7 @@ namespace transform
   void translation(geometries::Geometry* geometry, float dx, float dy);
 
   geometries::Point scaling(const geometries::Point& point, float sx, float sy);
+  void scaling(geometries::Geometry* geometry, float sx, float sy);
 
   geometries::Point rotate(const geometries::Point& point, float angle);
 }

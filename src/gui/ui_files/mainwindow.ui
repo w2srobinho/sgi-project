@@ -70,7 +70,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="pointTab">
          <property name="minimumSize">
@@ -1098,7 +1098,7 @@
                 </layout>
                </item>
                <item>
-                <widget class="QPushButton" name="appluScaling">
+                <widget class="QPushButton" name="applyScaling">
                  <property name="minimumSize">
                   <size>
                    <width>35</width>

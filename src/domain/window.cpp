@@ -80,6 +80,13 @@ void Window::translateGeometry(const std::string& geometryName, float dx, float 
   transform::translation(geometry, dx, dy);
 }
 
+void Window::scalingGeometry(const std::string& geometryName, float sx, float sy)
+{
+  assert(!displayFile.empty());
+  auto geometry = displayFile[geometryName];
+  transform::scaling(geometry, sx, sy);
+}
+
 void Window::rotateOrigin(const std::string& geometryName, float angle)
 {
   auto transformPoint = transform::rotate(minPoint, angle);

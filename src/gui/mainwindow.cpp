@@ -212,6 +212,30 @@ void MainWindow::applyTranslate_clicked()
   viewPort->redraw();
 }
 
+void MainWindow::applyScaling_clicked()
+{
+  auto sx = ui->sxScaling->text();
+  auto sy = ui->syScaling->text();
+
+  auto currentItem = ui->listWidget->currentItem();
+  if (!currentItem)
+    return;
+
+  if (sx.isEmpty() ||
+      sy.isEmpty())
+  {
+    showCriticalMessage("Add the SX and SY coordinates,\nto to scaling Geometry!");
+    return;
+  }
+
+  auto geometryName = currentItem->text().toStdString();
+  window->scalingGeometry(geometryName, sx.toFloat(), sy.toFloat());
+  ui->sxScaling->setText("1");
+  ui->syScaling->setText("1");
+  viewPort->redraw();
+
+}
+
 void MainWindow::leftRotateButton_clicked()
 {
   float angle = ui->angleSpinBox->text().toFloat();
@@ -292,6 +316,8 @@ void MainWindow::connectButtons()
   /* connect transforms buttons */
   connect(ui->applyTranslate, &QPushButton::clicked,
     this, &MainWindow::applyTranslate_clicked);
+  connect(ui->applyScaling, &QPushButton::clicked,
+    this, &MainWindow::applyScaling_clicked);
   connect(ui->leftRotateButton, &QPushButton::clicked,
     this, &MainWindow::leftRotateButton_clicked);
   connect(ui->rightRotateButton, &QPushButton::clicked,

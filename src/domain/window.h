@@ -24,6 +24,7 @@ public:
   void verticalMove(float rate);
   void horizontalMove(float rate);
   void translateGeometry(const std::string& geometryName, float dx, float dy);
+  void scalingGeometry(const std::string& geometryName, float sx, float sy);
   void rotateOrigin(const std::string& geometryName, float angle);
   void rotateWindow(const std::string& geometryName, float angle);
   void rotatePoint(const std::string& geometryName, const geometries::Point& rotatePoint, float angle);

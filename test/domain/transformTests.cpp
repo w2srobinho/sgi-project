@@ -8,6 +8,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <memory>
+#include "line.h"
 
 class TransformTests 
   : public testing::Test
@@ -70,6 +71,23 @@ TEST_F(TransformTests, scaling)
   {
     ASSERT_NEAR(expected.at(i), pointTransformed.get().at(i), 0.01);
   }
+}
+
+TEST_F(TransformTests, scalingTriangle)
+{
+  float sx = 2;
+  float sy = 0.5;
+
+  transform::scaling(triangle.get(), sx, sy);
+  
+  geometries::Point expectedP1(0.66f, 7);
+  geometries::Point expectedP2(0.66f, 9);
+  geometries::Point expectedP3(8.66f, 8);
+
+  ASSERT_EQ(3, triangle->getPoints().size());
+  EXPECT_EQ(expectedP1, *triangle->getPoints().at(0));
+  EXPECT_EQ(expectedP2, *triangle->getPoints().at(1));
+  EXPECT_EQ(expectedP3, *triangle->getPoints().at(2));
 }
 
 TEST_F(TransformTests, rotate)

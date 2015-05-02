@@ -50,6 +50,7 @@ protected slots:
   void addPolygonButton_clicked();
 
   void applyTranslate_clicked();
+  void applyScaling_clicked();
 
 private:
   Ui::MainWindow *ui;
