@@ -1,10 +1,11 @@
+#include "line.h"
+#include "transform.h"
 #include "viewPort.h"
 #include "window.h"
-#include "line.h"
 
 #include <QPainter>
 #include <QResizeEvent>
-#include "..\domain\transform.h"
+#include "clipping.h"
 
 namespace {
   const int OFFSET_TO_VP = 10;
@@ -17,7 +18,7 @@ ViewPort::~ViewPort()
 
 ViewPort::ViewPort(Window *window, QWidget *parent)
     : QWidget(parent)
-    , window_(window)
+    , _window(window)
     , minVpPoint(geometries::Point(0, 0))
     , maxVpPoint(geometries::Point(0, 0))
 {
@@ -40,23 +41,23 @@ geometries::Point ViewPort::windowToViewport(const geometries::Point& pointOnWin
   /**
   * Xvp = ((Xw - Xwmin) / (Xwmax - Xwmin)) * (Xvpmax - Xvpmin)
   */
-  auto windowWidth = window_->getMaxPoint().getX() - window_->getMinPoint().getX();
+  auto windowWidth = _window->getMaxPoint().getX() - _window->getMinPoint().getX();
   auto viewPortWidth = width()/*maxVpPoint.getX() - minVpPoint.getX()*/;
-  auto xvp = ((pointOnWindow.getX() - window_->getMinPoint().getX()) / (windowWidth)) * viewPortWidth;
+  auto xvp = ((pointOnWindow.getX() - _window->getMinPoint().getX()) / (windowWidth)) * viewPortWidth;
 
   /**
   * Yvp = (1 - ((Yw - Ywmin) / (Ywmax - Ywmin))) * (Yvpmax - Yvpmin)
   */
-  auto windowHeight = window_->getMaxPoint().getY() - window_->getMinPoint().getY();
+  auto windowHeight = _window->getMaxPoint().getY() - _window->getMinPoint().getY();
   auto viewPortHeight = height()/*maxVpPoint.getY() - minVpPoint.getY()*/;
-  auto yvp = (1 - ((pointOnWindow.getY() - window_->getMinPoint().getY()) / (windowHeight))) * viewPortHeight;
+  auto yvp = (1 - ((pointOnWindow.getY() - _window->getMinPoint().getY()) / (windowHeight))) * viewPortHeight;
 
   return geometries::Point(xvp, yvp);
 }
 
 void ViewPort::addGeometry(geometries::Geometry *geometry)
 {
-    window_->addGeometry(geometry);
+    _window->addGeometry(geometry);
     update();
 }
 
@@ -74,7 +75,9 @@ void ViewPort::paintEvent(QPaintEvent *)
 {    
     QPainter painter(this);
     
-    for (auto geometry : window_->getGeometries()) 
+    clipping::CohenSutherland sutherland(minVpPoint, maxVpPoint);
+
+    for (auto geometry : _window->getGeometries()) 
     {  
       switch (geometry->type())
       {
@@ -94,7 +97,13 @@ void ViewPort::paintEvent(QPaintEvent *)
               auto p0 = windowToViewport(*pointAtLine.at(0));
               auto p1 = windowToViewport(*pointAtLine.at(1));
 
-              painter.drawLine(QPointF(p0.getX(), p0.getY()), QPointF(p1.getX(), p1.getY()));
+
+              auto lineClipped = sutherland.LineClip(p0, p1);
+              auto p0Clipped = lineClipped.at(0);
+              auto p1Clipped = lineClipped.at(1);
+              painter.drawLine(
+                QPointF(p0Clipped.getX(), p0Clipped.getY()),
+                QPointF(p1Clipped.getX(), p1Clipped.getY()));
               break;
             }
             default:
@@ -117,8 +126,8 @@ void ViewPort::paintEvent(QPaintEvent *)
     painter.setPen(palette().dark().color());
     painter.setBrush(Qt::NoBrush);
 
-    QPointF topLeft(minVpPoint.getX(), minVpPoint.getY());
-    QPointF bottomRight(maxVpPoint.getX(), maxVpPoint.getY());
+    QPointF topLeft(minVpPoint.getX()-1, minVpPoint.getY()-1);
+    QPointF bottomRight(maxVpPoint.getX(), maxVpPoint.getY()+1);
 
     painter.drawRect(QRectF(topLeft, bottomRight));
 }

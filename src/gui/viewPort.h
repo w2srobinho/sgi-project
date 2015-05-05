@@ -31,7 +31,7 @@ protected:
   void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
 
 private:
-  Window *window_;
+  Window *_window;
 
   geometries::Point minVpPoint, maxVpPoint;
 };
