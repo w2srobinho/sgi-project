@@ -238,7 +238,7 @@ void MainWindow::applyScaling_clicked()
 
 void MainWindow::leftRotateButton_clicked()
 {
-  float angle = ui->angleSpinBox->text().toFloat();
+  float angle = 360.f - ui->angleSpinBox->text().toFloat();
   auto currentItem = ui->listWidget->currentItem();
 
   if (!currentItem)
@@ -265,8 +265,13 @@ void MainWindow::leftRotateButton_clicked()
 
 void MainWindow::rightRotateButton_clicked()
 {
-  float angle = 360.f - ui->angleSpinBox->text().toFloat();
-  auto geometryName = ui->listWidget->currentItem()->text().toStdString();
+  float angle = ui->angleSpinBox->text().toFloat();
+  auto currentItem = ui->listWidget->currentItem();
+
+  if (!currentItem)
+    return;
+
+  auto geometryName = currentItem->text().toStdString();
 
   if (ui->rb_origin->isChecked())
   {

@@ -15,6 +15,7 @@ namespace transform
   void scaling(geometries::Geometry* geometry, float sx, float sy);
 
   geometries::Point rotate(const geometries::Point& point, float angle);
+  void rotate(geometries::Geometry* geometry, const geometries::Point& rotatePoint, float angle);
 }
 
 #endif

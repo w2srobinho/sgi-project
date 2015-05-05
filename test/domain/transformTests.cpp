@@ -2,13 +2,10 @@
 
 #include "point.h"
 #include "polygon.h"
+#include "line.h"
 
 #include <gtest/gtest.h>
-
-#define _USE_MATH_DEFINES
-#include <math.h>
 #include <memory>
-#include "line.h"
 
 class TransformTests 
   : public testing::Test
@@ -92,7 +89,7 @@ TEST_F(TransformTests, scalingTriangle)
 
 TEST_F(TransformTests, rotate)
 {
-  float angle = static_cast<float>(M_PI / 6);
+  float angle = 30;
   geometries::Point p(2.0, 2.5);
 
   std::vector<float> expected = { 2.98f, 1.16f, 1.0 };

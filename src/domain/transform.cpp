@@ -1,8 +1,10 @@
 #include "transform.h"
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 namespace transform
-{
-  
+{  
   geometries::Point translation(const geometries::Point& point, float dx, float dy)
   {
 
@@ -58,7 +60,7 @@ namespace transform
     auto dx = centerGeometry.getX();
     auto dy = centerGeometry.getY();
 
-    translation(geometry, -dx, -dy); // translate to center by center Geometry
+    translation(geometry, -dx, -dy); // translate to origin by center Geometry
         
     for (auto point : geometry->getPoints())
     {
@@ -70,9 +72,14 @@ namespace transform
 
   geometries::Point rotate(const geometries::Point& point, float angle)
   {
-    std::vector<std::vector<float>> T = { { std::cos(angle), -std::sin(angle), 0 },
-                                          { std::sin(angle),  std::cos(angle), 0 },
-                                          {               0,                0, 1 } };
+    float radiansAngle = angle * M_PI / 180.f;
+    float cos = std::cos(radiansAngle);
+    float sin = std::sin(radiansAngle);
+
+    std::vector<std::vector<float>> T = { { cos, -sin, 0 },
+                                          { sin,  cos, 0 },
+                                          {   0,    0, 1 } };
+
 
     std::vector<float> pNew = { 0, 0, 0 };
 
@@ -86,6 +93,21 @@ namespace transform
     }
 
     return pNew;
+  }
+
+  void rotate(geometries::Geometry* geometry, const geometries::Point& rotatePoint, float angle)
+  {
+    auto dx = rotatePoint.getX();
+    auto dy = rotatePoint.getY();
+    
+    translation(geometry, -dx, -dy); // translate to rotate point 
+
+    for (auto point : geometry->getPoints())
+    {
+      *point = rotate(*point, angle);
+    }
+
+    translation(geometry, dx, dy); // return to original center Geometry
   }
 
 }
