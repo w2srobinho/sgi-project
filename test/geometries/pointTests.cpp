@@ -1,7 +1,5 @@
 #include "point.h"
 
-#define _USE_MATH_DEFINES
-#include <math.h>
 #include <gtest/gtest.h>
 
 
@@ -14,7 +12,7 @@ TEST(PointTests, productAssignOperator)
   p1 *= scale;
 
   ASSERT_EQ(p1, geometries::Point(5.09f, 19.9f));
-  ASSERT_EQ(3, p1.get().size());
+  ASSERT_EQ(3u, p1.get().size());
 }
 
 TEST(PointTests, assignOperator)

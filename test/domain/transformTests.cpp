@@ -2,7 +2,6 @@
 
 #include "point.h"
 #include "polygon.h"
-#include "line.h"
 
 #include <gtest/gtest.h>
 #include <memory>
@@ -49,7 +48,7 @@ TEST_F(TransformTests, translatePolygons)
   geometries::Point expectedP2(6, 7);
   geometries::Point expectedP3(10, 5);
 
-  ASSERT_EQ(3, triangle->getPoints().size());
+  ASSERT_EQ(3u, triangle->getPoints().size());
   ASSERT_EQ(expectedP1, *triangle->getPoints().at(0));
   ASSERT_EQ(expectedP2, *triangle->getPoints().at(1));
   ASSERT_EQ(expectedP3, *triangle->getPoints().at(2));
@@ -81,7 +80,7 @@ TEST_F(TransformTests, scalingTriangle)
   geometries::Point expectedP2(0.66f, 9);
   geometries::Point expectedP3(8.66f, 8);
 
-  ASSERT_EQ(3, triangle->getPoints().size());
+  ASSERT_EQ(3u, triangle->getPoints().size());
   EXPECT_EQ(expectedP1, *triangle->getPoints().at(0));
   EXPECT_EQ(expectedP2, *triangle->getPoints().at(1));
   EXPECT_EQ(expectedP3, *triangle->getPoints().at(2));
