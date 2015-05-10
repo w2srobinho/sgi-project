@@ -21,60 +21,61 @@ std::vector<geometries::Point> clipping::CohenSutherland::LineClip(
 
   int outcode0 = computeOutCode(x0, y0);
   int outcode1 = computeOutCode(x1, y1);
-
-  std::vector<geometries::Point> line;
+  
   while (true)
   {
     if (!(outcode0 | outcode1))
+      return { geometries::Point(x0, y0), geometries::Point(x1, y1) };
+    else if (outcode0 & outcode1)
+      return { geometries::Point(0, 0), geometries::Point(0, 0) };
+    else
     {
-      line = { p0, p1 };
-      break;
-    }
+      float x = 0;
+      float y = 0;
 
-    if (outcode0 & outcode1)
-      break;
+      int outcodeOut = outcode0 ? outcode0 : outcode1;
 
-    float x = 0;
-    float y = 0;
+      if (outcodeOut & TOP)
+      {
+        float yTop = _maxPoint.getY();
+        x = ((x1 - x0) / (y1 - y0)) * (yTop - y0) + x0;
+        y = yTop;
+      }
+      else if (outcodeOut & BOTTOM)
+      {
+        float yBottom = _minPoint.getY();
+        x = ((x1 - x0) / (y1 - y0)) * (yBottom - y0) + x0;
+        y = yBottom;
+      }
+      else if (outcodeOut & RIGHT) 
+      {
+        float xRight = _maxPoint.getX();
+        y = ((y1 - y0) / (x1 - x0)) * (xRight - x0) + y0;
+        x = xRight;
+      }
+      else if (outcodeOut & LEFT) 
+      {
+        float xLeft = _minPoint.getX();
+        y = ((y1 - y0) / (x1 - x0)) * (xLeft - x0) + y0;
+        x = xLeft;
+      }
 
-    int outcodeOut = outcode0 ? outcode0 : outcode1;
-
-    if (outcodeOut & TOP)
-    {
-      float ymax = _maxPoint.getY();
-      x = x0 + (x1 - x0) * (ymax - y0) / (y1 - y0);
-      y = ymax;
-    }
-    else if (outcodeOut & BOTTOM)
-    {
-      float ymin = _minPoint.getY();
-      x = x0 + (x1 - x0) * (ymin - y0) / (y1 - y0);
-      y = ymin;
-    }
-    else if (outcodeOut & RIGHT) {
-      float xmax = _maxPoint.getX();
-      y = y0 + (y1 - y0) * (xmax - x0) / (x1 - x0);
-      x = xmax;
-    }
-    else if (outcodeOut & LEFT) {
-      float xmin = _minPoint.getX();
-      y = y0 + (y1 - y0) * (xmin - x0) / (x1 - x0);
-      x = xmin;
-    }
-
-    if (outcodeOut == outcode0) {
-      x0 = x;
-      y0 = y;
-      outcode0 = computeOutCode(x0, y0);
-    }
-    else {
-      x1 = x;
-      y1 = y;
-      outcode1 = computeOutCode(x1, y1);
+      if (outcodeOut == outcode0) 
+      {
+        x0 = x;
+        y0 = y;
+        outcode0 = computeOutCode(x0, y0);
+      }
+      else 
+      {
+        x1 = x;
+        y1 = y;
+        outcode1 = computeOutCode(x1, y1);
+      }
     }
   }
 
-  return line = { geometries::Point(x0, y0), geometries::Point(x1, y1) };
+  return { geometries::Point(x0, y0), geometries::Point(x1, y1) };
 }
 
 int clipping::CohenSutherland::computeOutCode(float x, float y)
