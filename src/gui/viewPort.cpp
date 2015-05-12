@@ -101,19 +101,38 @@ void ViewPort::paintEvent(QPaintEvent *)
               auto lineClipped = sutherland.LineClip(p0, p1);
               auto p0Clipped = lineClipped.at(0);
               auto p1Clipped = lineClipped.at(1);
-              painter.drawLine(
-                QPointF(p0Clipped.getX(), p0Clipped.getY()),
-                QPointF(p1Clipped.getX(), p1Clipped.getY()));
+              if (p0Clipped != p1Clipped)
+              {
+                painter.drawLine(
+                  QPointF(p0Clipped.getX(), p0Clipped.getY()),
+                  QPointF(p1Clipped.getX(), p1Clipped.getY()));
+              }
               break;
             }
             default:
             {
               QPolygonF polygonQt;
+              std::vector<geometries::Point> polygonTransformed;
+
               for (auto point : geometry->getPoints())
+                polygonTransformed.push_back(windowToViewport(*point));
+
+              auto previusPoint = polygonTransformed[0];
+
+              for (unsigned int i = 1; i < polygonTransformed.size(); ++i)
               {
-                auto vpPoint = windowToViewport(*point);
-                polygonQt << QPointF(vpPoint.getX(), vpPoint.getY());
+                auto lineClipped = sutherland.LineClip(previusPoint, polygonTransformed[i]);
+                previusPoint = polygonTransformed[i];
+
+                auto p0Clipped = lineClipped.at(0);
+                auto p1Clipped = lineClipped.at(1);
+                if (p0Clipped != p1Clipped)
+                {
+                  polygonQt << QPointF(p0Clipped.getX(), p0Clipped.getY());
+                  polygonQt << QPointF(p1Clipped.getX(), p1Clipped.getY());
+                }
               }
+              painter.setBrush(Qt::black);
               painter.drawPolygon(polygonQt);
             }
           }

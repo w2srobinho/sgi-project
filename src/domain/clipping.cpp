@@ -78,6 +78,15 @@ std::vector<geometries::Point> clipping::CohenSutherland::LineClip(
   return { geometries::Point(x0, y0), geometries::Point(x1, y1) };
 }
 
+/*std::vector<geometries::Point> polygonClip(std::vector<geometries::Point> polygon)
+{
+    std::vector<geometries::Point> polygonClipped;
+    for(auto point : polygon)
+    {
+
+    }
+}*/
+
 int clipping::CohenSutherland::computeOutCode(float x, float y)
 {
   int code = INSIDE;
