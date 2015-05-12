@@ -44,7 +44,7 @@ if(NOT MSVC)
 
   add_library(gmock STATIC ${GMOCK_SOURCE})
   target_include_directories(gmock PUBLIC ${gmock_INCLUDE_DIRS} PRIVATE ${gmock_ROOT_DIR})
-  target_link_libraries(gmock gtest)
+  target_link_libraries(gmock gtest pthread)
 
   return()
 endif()
