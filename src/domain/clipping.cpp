@@ -10,7 +10,7 @@ clipping::CohenSutherland::CohenSutherland(
 
 }
 
-std::vector<geometries::Point> clipping::CohenSutherland::LineClip(
+std::vector<geometries::Point> clipping::CohenSutherland::lineClip(
   const geometries::Point& p0,
   const geometries::Point& p1)
 {
@@ -78,14 +78,28 @@ std::vector<geometries::Point> clipping::CohenSutherland::LineClip(
   return { geometries::Point(x0, y0), geometries::Point(x1, y1) };
 }
 
-/*std::vector<geometries::Point> polygonClip(std::vector<geometries::Point> polygon)
+std::vector<geometries::Point> clipping::CohenSutherland::polygonClip(
+  const std::vector<geometries::Point> &polygon)
 {
-    std::vector<geometries::Point> polygonClipped;
-    for(auto point : polygon)
-    {
+  std::vector<geometries::Point> polygonClipped;
+  auto previusPoint = polygon[0];
 
+  for (unsigned int i = 1; i < polygon.size(); ++i)
+  {
+    auto lineClipped = lineClip(previusPoint, polygon[i]);
+    previusPoint = polygon[i];
+
+    auto p0Clipped = lineClipped.at(0);
+    auto p1Clipped = lineClipped.at(1);
+    if (p0Clipped != p1Clipped)
+    {
+      polygonClipped.push_back(p0Clipped);
+      polygonClipped.push_back(p1Clipped);
     }
-}*/
+  }
+
+  return polygonClipped;
+}
 
 int clipping::CohenSutherland::computeOutCode(float x, float y)
 {

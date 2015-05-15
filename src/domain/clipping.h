@@ -18,9 +18,11 @@ namespace clipping
   public:
     CohenSutherland(const geometries::Point& minPoint, const geometries::Point& maxPoint);
 
-    std::vector<geometries::Point> LineClip(
+    std::vector<geometries::Point> lineClip(
       const geometries::Point& p0,
       const geometries::Point& p1);
+
+    std::vector<geometries::Point> polygonClip(const std::vector<geometries::Point> &polygon);
 
   private:
     int computeOutCode(float x, float y);

@@ -31,7 +31,7 @@ TEST_F(CohenSutherlandTest, LineClippingLeft)
     geometries::Point(5, 5) 
   };
 
-  auto lineClipped = sutherland->LineClip(line.getP1(), line.getP2());
+  auto lineClipped = sutherland->lineClip(line.getP1(), line.getP2());
 
   for (std::size_t i = 0; i < lineClipped.size(); ++i)
   {
@@ -48,7 +48,7 @@ TEST_F(CohenSutherlandTest, LineClippingTop)
     geometries::Point(5, 5)
   };
 
-  auto lineClipped = sutherland->LineClip(line.getP1(), line.getP2());
+  auto lineClipped = sutherland->lineClip(line.getP1(), line.getP2());
 
   for (std::size_t i = 0; i < lineClipped.size(); ++i)
   {
@@ -65,7 +65,7 @@ TEST_F(CohenSutherlandTest, LineClippingRight)
     geometries::Point(10, 5)
   };
 
-  auto lineClipped = sutherland->LineClip(line.getP1(), line.getP2());
+  auto lineClipped = sutherland->lineClip(line.getP1(), line.getP2());
 
   for (std::size_t i = 0; i < lineClipped.size(); ++i)
   {
@@ -82,7 +82,7 @@ TEST_F(CohenSutherlandTest, LineClippingBottom)
     geometries::Point(5, 10)
   };
 
-  auto lineClipped = sutherland->LineClip(line.getP1(), line.getP2());
+  auto lineClipped = sutherland->lineClip(line.getP1(), line.getP2());
 
   for (std::size_t i = 0; i < lineClipped.size(); ++i)
   {
@@ -99,7 +99,7 @@ TEST_F(CohenSutherlandTest, LineClippingInside)
     geometries::Point(7, 5)
   };
 
-  auto lineClipped = sutherland->LineClip(line.getP1(), line.getP2());
+  auto lineClipped = sutherland->lineClip(line.getP1(), line.getP2());
 
   for (std::size_t i = 0; i < lineClipped.size(); ++i)
   {
@@ -116,7 +116,7 @@ TEST_F(CohenSutherlandTest, LineClippingLeft2Top)
     geometries::Point(5, 0)
   };
 
-  auto lineClipped = sutherland->LineClip(line.getP1(), line.getP2());
+  auto lineClipped = sutherland->lineClip(line.getP1(), line.getP2());
 
   for (std::size_t i = 0; i < lineClipped.size(); ++i)
   {

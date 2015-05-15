@@ -98,7 +98,7 @@ void ViewPort::paintEvent(QPaintEvent *)
               auto p1 = windowToViewport(*pointAtLine.at(1));
 
 
-              auto lineClipped = sutherland.LineClip(p0, p1);
+              auto lineClipped = sutherland.lineClip(p0, p1);
               auto p0Clipped = lineClipped.at(0);
               auto p1Clipped = lineClipped.at(1);
               if (p0Clipped != p1Clipped)
@@ -117,22 +117,12 @@ void ViewPort::paintEvent(QPaintEvent *)
               for (auto point : geometry->getPoints())
                 polygonTransformed.push_back(windowToViewport(*point));
 
-              auto previusPoint = polygonTransformed[0];
+              auto polygonClipped = sutherland.polygonClip(polygonTransformed);
 
-              for (unsigned int i = 1; i < polygonTransformed.size(); ++i)
-              {
-                auto lineClipped = sutherland.LineClip(previusPoint, polygonTransformed[i]);
-                previusPoint = polygonTransformed[i];
+              for (auto point : polygonClipped)
+                polygonQt << QPointF(point.getX(), point.getY());
 
-                auto p0Clipped = lineClipped.at(0);
-                auto p1Clipped = lineClipped.at(1);
-                if (p0Clipped != p1Clipped)
-                {
-                  polygonQt << QPointF(p0Clipped.getX(), p0Clipped.getY());
-                  polygonQt << QPointF(p1Clipped.getX(), p1Clipped.getY());
-                }
-              }
-              painter.setBrush(Qt::black);
+              painter.setBrush(QBrush(QColor(128, 128, 255, 128)));
               painter.drawPolygon(polygonQt);
             }
           }
