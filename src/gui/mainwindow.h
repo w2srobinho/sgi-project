@@ -51,6 +51,8 @@ protected slots:
 
   void applyTranslate_clicked();
   void applyScaling_clicked();
+ 
+  void addBezier();
 
 private:
   Ui::MainWindow *ui;

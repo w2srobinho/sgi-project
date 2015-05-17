@@ -13,6 +13,7 @@
 
 #include <assert.h>
 #include <iostream>
+#include "bezier.h"
 
 namespace {
   const int RATE_TO_MOVE = 2;
@@ -34,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
   ui->rotatePointY->setEnabled(false);
   ui->listWidget->setSelectionMode(QAbstractItemView::SingleSelection);
   hasNotGeometry();
+  addBezier();
 }
 
 MainWindow::~MainWindow()
@@ -147,6 +149,15 @@ void MainWindow::addLineButton_clicked()
   haveGeometry();
 }
 
+void MainWindow::addBezier()
+{
+  std::vector<geometries::Point*> bezier = { new geometries::Point(5, 5),
+                                             new geometries::Point(10, 10),
+                                             new geometries::Point(15, 5),
+                                             new geometries::Point(20, 10)};
+
+  viewPort->addGeometry(new geometries::Bezier(bezier));
+}
 
 void MainWindow::addPointOnPolygonButton_clicked()
 {

@@ -6,6 +6,8 @@
 #include <QPainter>
 #include <QResizeEvent>
 #include "clipping.h"
+#include "bezier.h"
+#include <iostream>
 
 namespace {
   const int OFFSET_TO_VP = 10;
@@ -124,7 +126,35 @@ void ViewPort::paintEvent(QPaintEvent *)
 
               painter.setBrush(QBrush(QColor(128, 128, 255, 128)));
               painter.drawPolygon(polygonQt);
+              break;
             }
+          }
+        }
+        case geometries::BEZIER:
+        {
+          auto bezier = dynamic_cast<geometries::Bezier*>(geometry);
+          if (!bezier)
+            break;
+
+          QList<QPointF> listPointQt;
+          std::vector<geometries::Point> bezierTransformed;
+          
+          if (!bezier->getBezierPoints(1u).size())
+            int A = 0;
+
+          for (auto point : bezier->getBezierPoints(1u))
+            bezierTransformed.push_back(windowToViewport(point));
+
+          auto bezierClipped = sutherland.polygonClip(bezierTransformed);
+
+          std::cerr << "Bezier Size = " << bezierClipped.size() << std::endl;
+          QPointF from(bezierClipped[0].getX(), bezierClipped[0].getY());
+
+          for (std::size_t i = 1; i < bezierClipped.size(); ++i)
+          {
+            QPointF to(bezierClipped[i].getX(), bezierClipped[i].getY());
+            painter.drawLine(from, to);
+            from = to;
           }
         }
       }

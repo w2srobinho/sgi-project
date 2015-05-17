@@ -5,6 +5,7 @@
 
 #include <gtest/gtest.h>
 #include <memory>
+#include "bezier.h"
 
 class CohenSutherlandTest
   : public testing::Test
@@ -121,5 +122,34 @@ TEST_F(CohenSutherlandTest, LineClippingLeft2Top)
   for (std::size_t i = 0; i < lineClipped.size(); ++i)
   {
     ASSERT_EQ(expected.at(i), lineClipped.at(i));
+  }
+}
+
+
+TEST_F(CohenSutherlandTest, CurveClipping)
+{
+  geometries::Line line(new geometries::Point(-2, 7), new geometries::Point(7, -2), "Line");
+
+  geometries::Bezier bezier({
+    new geometries::Point(5, 5),
+    new geometries::Point(10, 10),
+    new geometries::Point(15, 5)//,
+    //new geometries::Point(20, 5) 
+  });
+
+  auto bezierClipped = sutherland->polygonClip(bezier.getBezierPoints(1u));
+
+  std::vector<geometries::Point> expected = {
+    geometries::Point(0, 5),
+    geometries::Point(5, 0)
+  };
+  
+  std::cout << "bezier size = " << bezierClipped.size() << std::endl;
+  for (std::size_t i = 0; i < bezierClipped.size(); ++i)
+  {
+    std::cout << "geometries::Point(" << bezierClipped[i].getX() <<
+      ", " << bezierClipped[i].getY() << ")" << std::endl;
+
+    //ASSERT_EQ(expected.at(i), bezierClipped.at(i));
   }
 }
