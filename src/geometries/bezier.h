@@ -31,10 +31,7 @@ namespace geometries {
       const geometries::Point& p1,
       const geometries::Point& p2,
       const geometries::Point& p3,
-      float t);
-    
-    float multT(std::vector<float> B, float t);
-    std::vector<float> mountBezierTransform(std::vector<float> C);
+      float t);    
   };
 }
 

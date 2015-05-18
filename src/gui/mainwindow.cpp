@@ -35,7 +35,6 @@ MainWindow::MainWindow(QWidget *parent)
   ui->rotatePointY->setEnabled(false);
   ui->listWidget->setSelectionMode(QAbstractItemView::SingleSelection);
   hasNotGeometry();
-  addBezier();
 }
 
 MainWindow::~MainWindow()
@@ -96,6 +95,9 @@ void MainWindow::addPointButton_clicked()
   geometries::Geometry * geometry;
   std::unique_ptr<geometries::Point> point(new geometries::Point(x.toFloat(), y.toFloat()));
 
+  ui->pointEditX->setText("");
+  ui->pointEditY->setText("");
+
   if (name.empty())
     geometry = new geometries::Polygon(std::vector<geometries::Point*>{point.release()});
   else {
@@ -135,6 +137,11 @@ void MainWindow::addLineButton_clicked()
   auto name = ui->LineName->text().toStdString();
   std::unique_ptr<geometries::Point> p1(new geometries::Point(ptoX1.toFloat(), ptoY1.toFloat()));
   std::unique_ptr<geometries::Point> p2(new geometries::Point(ptoX2.toFloat(), ptoY2.toFloat()));
+  
+  ui->lineX1->setText("");
+  ui->lineY1->setText("");
+  ui->lineX2->setText("");
+  ui->lineY2->setText("");
 
   geometries::Geometry *geometry;
 
@@ -145,18 +152,8 @@ void MainWindow::addLineButton_clicked()
 
   viewPort->addGeometry(geometry);
   ui->listWidget->addItem(QString(geometry->getName().c_str()));
- 
+
   haveGeometry();
-}
-
-void MainWindow::addBezier()
-{
-  std::vector<geometries::Point*> bezier = { new geometries::Point(5, 5),
-                                             new geometries::Point(10, 10),
-                                             new geometries::Point(15, 5),
-                                             new geometries::Point(20, 10)};
-
-  viewPort->addGeometry(new geometries::Bezier(bezier));
 }
 
 void MainWindow::addPointOnPolygonButton_clicked()
@@ -197,6 +194,58 @@ void MainWindow::addPolygonButton_clicked()
   ui->listWidget->addItem(QString(geometry->getName().c_str()));
   pointsToPolygon.clear();
  
+  ui->tabWidget_2->setEnabled(true);
+}
+
+void MainWindow::addCurveButton_clicked()
+{
+  auto x0 = ui->x0Bezier->text();
+  auto y0 = ui->y0Bezier->text();
+  auto x1 = ui->x1Bezier->text();
+  auto y1 = ui->y1Bezier->text();
+  auto x2 = ui->x2Bezier->text();
+  auto y2 = ui->y2Bezier->text();
+  auto x3 = ui->x3Bezier->text();
+  auto y3 = ui->y3Bezier->text();
+
+  if (x0.isEmpty() || y0.isEmpty() ||
+      x1.isEmpty() || y1.isEmpty() ||
+      x2.isEmpty() || y2.isEmpty())
+  {
+    showCriticalMessage("Add the X and Y coordinates,\nto add the point to Polygon!");
+    return;
+  }
+
+  std::vector<geometries::Point*> pointsToBezier = { 
+    new geometries::Point(x0.toFloat(), y0.toFloat()),
+    new geometries::Point(x1.toFloat(), y1.toFloat()),
+    new geometries::Point(x2.toFloat(), y2.toFloat())};
+
+  if (!(x3.isEmpty() && y3.isEmpty()))
+    pointsToBezier.push_back(new geometries::Point(x3.toFloat(), y3.toFloat()));
+    
+  ui->x0Bezier->setText("");
+  ui->y0Bezier->setText("");
+  ui->x1Bezier->setText("");
+  ui->y1Bezier->setText("");
+  ui->x2Bezier->setText("");
+  ui->y2Bezier->setText("");
+  ui->x3Bezier->setText("");
+  ui->y3Bezier->setText("");
+  
+  auto name = ui->polygonName->text().toStdString();
+  geometries::Geometry * geometry;
+
+  if (name.empty())
+    geometry = new geometries::Bezier(pointsToBezier);
+  else
+    geometry = new geometries::Bezier(pointsToBezier, name);
+
+  viewPort->addGeometry(geometry);
+  ui->listWidget->addItem(QString(geometry->getName().c_str()));
+  pointsToBezier.clear();
+
+  haveGeometry();
   ui->tabWidget_2->setEnabled(true);
 }
 
@@ -312,6 +361,8 @@ void MainWindow::connectButtons()
     this, &MainWindow::addPointOnPolygonButton_clicked);
   connect(ui->addPolygonButton, &QPushButton::clicked,
     this, &MainWindow::addPolygonButton_clicked);
+  connect(ui->addCurveButton, &QPushButton::clicked,
+    this, &MainWindow::addCurveButton_clicked);
 
   /* connect zoom buttons */
   connect(ui->zoomInButton, &QPushButton::clicked,

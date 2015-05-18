@@ -48,11 +48,11 @@ protected slots:
   void addLineButton_clicked();
   void addPointOnPolygonButton_clicked();
   void addPolygonButton_clicked();
+  void addCurveButton_clicked();
 
   void applyTranslate_clicked();
   void applyScaling_clicked();
  
-  void addBezier();
 
 private:
   Ui::MainWindow *ui;

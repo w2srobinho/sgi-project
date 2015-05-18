@@ -147,7 +147,9 @@ void ViewPort::paintEvent(QPaintEvent *)
 
           auto bezierClipped = sutherland.polygonClip(bezierTransformed);
 
-          std::cerr << "Bezier Size = " << bezierClipped.size() << std::endl;
+          if (!bezierClipped.size())
+            break;;
+
           QPointF from(bezierClipped[0].getX(), bezierClipped[0].getY());
 
           for (std::size_t i = 1; i < bezierClipped.size(); ++i)
@@ -156,6 +158,7 @@ void ViewPort::paintEvent(QPaintEvent *)
             painter.drawLine(from, to);
             from = to;
           }
+          break;
         }
       }
       painter.restore();

@@ -34,15 +34,17 @@ namespace geometries {
     auto _points = getPoints();
     assert(_points.size() >= 3u && _points.size() <= 4u);
     std::vector<Point> bezierPoints;
+    
+    float step = 0.05f;
 
     if (_points.size() == 3u)
     {
-      for (float t = 0; t <= maxT; t += 0.1f)
+      for (float t = 0; t <= maxT; t += step)
         bezierPoints.push_back(quadraticBezier(*_points[0], *_points[1], *_points[2], t));
     }
     else if (_points.size() == 4u)
     {
-      for (float t = 0; t <= maxT; t += 0.1f)
+      for (float t = 0; t <= maxT; t += step)
         bezierPoints.push_back(cubicBezier(*_points[0], *_points[1], *_points[2], *_points[3], t));
     }
 
@@ -82,34 +84,6 @@ namespace geometries {
               t * t * t * p3.getY();
 
     return geometries::Point(x, y);
-  }
-
-  float Bezier::multT(std::vector<float> B, float t)
-  {
-    std::vector<float> T = { powf(t, 3), t * t, t, 1 };
-    assert(4 == B.size());
-    float result = 0;
-    for (std::size_t i = 0; i < T.size(); ++i)
-    {
-      result += T[i] * B[i];
-    }
-
-    return result;
-  }
-
-  std::vector<float> Bezier::mountBezierTransform(std::vector<float> C)
-  {
-    std::vector<float> BC = {0, 0, 0, 0};
-
-    for (std::size_t i = 0; i < MB.size() - 1; ++i)
-    {
-      for (std::size_t j = 0; j < MB[i].size(); ++j)
-      {
-        BC[i] += MB[i][j] * C[j];
-      }
-    }
-
-    return BC;
   }
 
   shape Bezier::type() const
