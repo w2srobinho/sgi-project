@@ -119,13 +119,26 @@ void ViewPort::paintEvent(QPaintEvent *)
               for (auto point : geometry->getPoints())
                 polygonTransformed.push_back(windowToViewport(*point));
 
-              auto polygonClipped = sutherland.polygonClip(polygonTransformed);
+              if (polygonTransformed.front() != polygonTransformed.back())
+              {
+                for (std::size_t i = 1; i < polygonTransformed.size(); ++i)
+                {
+                  auto clipped = sutherland.lineClip(polygonTransformed[i - 1], polygonTransformed[i]);
+                  QPointF from(clipped[0].getX(), clipped[0].getY());
+                  QPointF to(clipped[1].getX(), clipped[1].getY());
+                  painter.drawLine(from, to);
+                }
+              }
+              else
+              {
+                auto polygonClipped = sutherland.polygonClip(polygonTransformed);
 
-              for (auto point : polygonClipped)
-                polygonQt << QPointF(point.getX(), point.getY());
+                for (auto point : polygonClipped)
+                  polygonQt << QPointF(point.getX(), point.getY());
 
-              painter.setBrush(QBrush(QColor(128, 128, 255, 128)));
-              painter.drawPolygon(polygonQt);
+                painter.setBrush(QBrush(QColor(128, 128, 255, 128)));
+                painter.drawPolygon(polygonQt);
+              }
               break;
             }
           }
@@ -145,18 +158,12 @@ void ViewPort::paintEvent(QPaintEvent *)
           for (auto point : bezier->getBezierPoints(1u))
             bezierTransformed.push_back(windowToViewport(point));
 
-          auto bezierClipped = sutherland.polygonClip(bezierTransformed);
-
-          if (!bezierClipped.size())
-            break;;
-
-          QPointF from(bezierClipped[0].getX(), bezierClipped[0].getY());
-
-          for (std::size_t i = 1; i < bezierClipped.size(); ++i)
+          for (std::size_t i = 1; i < bezierTransformed.size(); ++i)
           {
-            QPointF to(bezierClipped[i].getX(), bezierClipped[i].getY());
+            auto clipped = sutherland.lineClip(bezierTransformed[i - 1], bezierTransformed[i]);
+            QPointF from(clipped[0].getX(), clipped[0].getY());
+            QPointF to(clipped[1].getX(), clipped[1].getY());
             painter.drawLine(from, to);
-            from = to;
           }
           break;
         }
