@@ -77,7 +77,7 @@ void ViewPort::paintEvent(QPaintEvent *)
 {    
     QPainter painter(this);
     
-    clipping::CohenSutherland sutherland(minVpPoint, maxVpPoint);
+    clipping::Clip sutherland(minVpPoint, maxVpPoint);
 
     for (auto geometry : _window->getGeometries()) 
     {  
@@ -100,7 +100,7 @@ void ViewPort::paintEvent(QPaintEvent *)
               auto p1 = windowToViewport(*pointAtLine.at(1));
 
 
-              auto lineClipped = sutherland.lineClip(p0, p1);
+              auto lineClipped = sutherland.cSutherlandLine(p0, p1);
               auto p0Clipped = lineClipped.at(0);
               auto p1Clipped = lineClipped.at(1);
               if (p0Clipped != p1Clipped)
@@ -123,7 +123,7 @@ void ViewPort::paintEvent(QPaintEvent *)
               {
                 for (std::size_t i = 1; i < polygonTransformed.size(); ++i)
                 {
-                  auto clipped = sutherland.lineClip(polygonTransformed[i - 1], polygonTransformed[i]);
+                  auto clipped = sutherland.lBarskyLine(polygonTransformed[i - 1], polygonTransformed[i]);
                   QPointF from(clipped[0].getX(), clipped[0].getY());
                   QPointF to(clipped[1].getX(), clipped[1].getY());
                   painter.drawLine(from, to);
@@ -131,7 +131,7 @@ void ViewPort::paintEvent(QPaintEvent *)
               }
               else
               {
-                auto polygonClipped = sutherland.polygonClip(polygonTransformed);
+                auto polygonClipped = sutherland.lBarskyPolygon(polygonTransformed);
 
                 for (auto point : polygonClipped)
                   polygonQt << QPointF(point.getX(), point.getY());
@@ -152,15 +152,12 @@ void ViewPort::paintEvent(QPaintEvent *)
           QList<QPointF> listPointQt;
           std::vector<geometries::Point> bezierTransformed;
           
-          if (!bezier->getBezierPoints(1u).size())
-            int A = 0;
-
           for (auto point : bezier->getBezierPoints(1u))
             bezierTransformed.push_back(windowToViewport(point));
 
           for (std::size_t i = 1; i < bezierTransformed.size(); ++i)
           {
-            auto clipped = sutherland.lineClip(bezierTransformed[i - 1], bezierTransformed[i]);
+            auto clipped = sutherland.lBarskyLine(bezierTransformed[i - 1], bezierTransformed[i]);
             QPointF from(clipped[0].getX(), clipped[0].getY());
             QPointF to(clipped[1].getX(), clipped[1].getY());
             painter.drawLine(from, to);

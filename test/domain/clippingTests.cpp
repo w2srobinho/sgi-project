@@ -7,7 +7,7 @@
 #include <memory>
 #include "bezier.h"
 
-class CohenSutherlandTest
+class ClipTest
   : public testing::Test
 {
 protected:
@@ -16,14 +16,14 @@ protected:
     geometries::Point minVpPoint(0, 0);
     geometries::Point maxVpPoint(10, 10);
 
-    sutherland.reset(new clipping::CohenSutherland(minVpPoint, maxVpPoint));
+    clip.reset(new clipping::Clip(minVpPoint, maxVpPoint));
   }
 
 protected:
-  std::unique_ptr<clipping::CohenSutherland> sutherland;
+  std::unique_ptr<clipping::Clip> clip;
 };
 
-TEST_F(CohenSutherlandTest, LineClippingLeft)
+TEST_F(ClipTest, CohenSutherlandLineClippingLeft)
 {
   geometries::Line line(new geometries::Point(-2, 5), new geometries::Point(5, 5), "Line");
   
@@ -32,7 +32,7 @@ TEST_F(CohenSutherlandTest, LineClippingLeft)
     geometries::Point(5, 5) 
   };
 
-  auto lineClipped = sutherland->lineClip(line.getP1(), line.getP2());
+  auto lineClipped = clip->cSutherlandLine(line.getP1(), line.getP2());
 
   for (std::size_t i = 0; i < lineClipped.size(); ++i)
   {
@@ -40,7 +40,7 @@ TEST_F(CohenSutherlandTest, LineClippingLeft)
   }
 }
 
-TEST_F(CohenSutherlandTest, LineClippingTop)
+TEST_F(ClipTest, CohenSutherlandLineClippingTop)
 {
   geometries::Line line(new geometries::Point(5, -2), new geometries::Point(5, 5), "Line");
 
@@ -49,7 +49,7 @@ TEST_F(CohenSutherlandTest, LineClippingTop)
     geometries::Point(5, 5)
   };
 
-  auto lineClipped = sutherland->lineClip(line.getP1(), line.getP2());
+  auto lineClipped = clip->cSutherlandLine(line.getP1(), line.getP2());
 
   for (std::size_t i = 0; i < lineClipped.size(); ++i)
   {
@@ -57,7 +57,7 @@ TEST_F(CohenSutherlandTest, LineClippingTop)
   }
 }
 
-TEST_F(CohenSutherlandTest, LineClippingRight)
+TEST_F(ClipTest, CohenSutherlandLineClippingRight)
 {
   geometries::Line line(new geometries::Point(5, 5), new geometries::Point(12, 5), "Line");
 
@@ -66,7 +66,7 @@ TEST_F(CohenSutherlandTest, LineClippingRight)
     geometries::Point(10, 5)
   };
 
-  auto lineClipped = sutherland->lineClip(line.getP1(), line.getP2());
+  auto lineClipped = clip->cSutherlandLine(line.getP1(), line.getP2());
 
   for (std::size_t i = 0; i < lineClipped.size(); ++i)
   {
@@ -74,7 +74,7 @@ TEST_F(CohenSutherlandTest, LineClippingRight)
   }
 }
 
-TEST_F(CohenSutherlandTest, LineClippingBottom)
+TEST_F(ClipTest, CohenSutherlandLineClippingBottom)
 {
   geometries::Line line(new geometries::Point(5, 5), new geometries::Point(5, 12), "Line");
 
@@ -83,7 +83,7 @@ TEST_F(CohenSutherlandTest, LineClippingBottom)
     geometries::Point(5, 10)
   };
 
-  auto lineClipped = sutherland->lineClip(line.getP1(), line.getP2());
+  auto lineClipped = clip->cSutherlandLine(line.getP1(), line.getP2());
 
   for (std::size_t i = 0; i < lineClipped.size(); ++i)
   {
@@ -91,7 +91,7 @@ TEST_F(CohenSutherlandTest, LineClippingBottom)
   }
 }
 
-TEST_F(CohenSutherlandTest, LineClippingInside)
+TEST_F(ClipTest, CohenSutherlandLineClippingInside)
 {
   geometries::Line line(new geometries::Point(2, 5), new geometries::Point(7, 5), "Line");
 
@@ -100,7 +100,7 @@ TEST_F(CohenSutherlandTest, LineClippingInside)
     geometries::Point(7, 5)
   };
 
-  auto lineClipped = sutherland->lineClip(line.getP1(), line.getP2());
+  auto lineClipped = clip->cSutherlandLine(line.getP1(), line.getP2());
 
   for (std::size_t i = 0; i < lineClipped.size(); ++i)
   {
@@ -108,7 +108,7 @@ TEST_F(CohenSutherlandTest, LineClippingInside)
   }
 }
 
-TEST_F(CohenSutherlandTest, LineClippingLeft2Top)
+TEST_F(ClipTest, CohenSutherlandLineClippingLeft2Top)
 {
   geometries::Line line(new geometries::Point(-2, 7), new geometries::Point(7, -2), "Line");
 
@@ -117,7 +117,7 @@ TEST_F(CohenSutherlandTest, LineClippingLeft2Top)
     geometries::Point(5, 0)
   };
 
-  auto lineClipped = sutherland->lineClip(line.getP1(), line.getP2());
+  auto lineClipped = clip->cSutherlandLine(line.getP1(), line.getP2());
 
   for (std::size_t i = 0; i < lineClipped.size(); ++i)
   {
@@ -125,31 +125,104 @@ TEST_F(CohenSutherlandTest, LineClippingLeft2Top)
   }
 }
 
+TEST_F(ClipTest, LiangBarskyLineClippingLeft)
+{
+  geometries::Line line(new geometries::Point(-2, 5), new geometries::Point(5, 5), "Line");
 
-TEST_F(CohenSutherlandTest, CurveClipping)
+  std::vector<geometries::Point> expected = {
+    geometries::Point(0, 5),
+    geometries::Point(5, 5)
+  };
+
+  auto lineClipped = clip->lBarskyLine(line.getP1(), line.getP2());
+
+  for (std::size_t i = 0; i < lineClipped.size(); ++i)
+  {
+    ASSERT_EQ(expected.at(i), lineClipped.at(i));
+  }
+}
+
+TEST_F(ClipTest, LiangBarskyLineClippingTop)
+{
+  geometries::Line line(new geometries::Point(5, -2), new geometries::Point(5, 5), "Line");
+
+  std::vector<geometries::Point> expected = {
+    geometries::Point(5, 0),
+    geometries::Point(5, 5)
+  };
+
+  auto lineClipped = clip->lBarskyLine(line.getP1(), line.getP2());
+
+  for (std::size_t i = 0; i < lineClipped.size(); ++i)
+  {
+    ASSERT_EQ(expected.at(i), lineClipped.at(i));
+  }
+}
+
+TEST_F(ClipTest, LiangBarskyLineClippingRight)
+{
+  geometries::Line line(new geometries::Point(5, 5), new geometries::Point(12, 5), "Line");
+
+  std::vector<geometries::Point> expected = {
+    geometries::Point(5, 5),
+    geometries::Point(10, 5)
+  };
+
+  auto lineClipped = clip->lBarskyLine(line.getP1(), line.getP2());
+
+  for (std::size_t i = 0; i < lineClipped.size(); ++i)
+  {
+    ASSERT_EQ(expected.at(i), lineClipped.at(i));
+  }
+}
+
+TEST_F(ClipTest, LiangBarskyLineClippingBottom)
+{
+  geometries::Line line(new geometries::Point(5, 5), new geometries::Point(5, 12), "Line");
+
+  std::vector<geometries::Point> expected = {
+    geometries::Point(5, 5),
+    geometries::Point(5, 10)
+  };
+
+  auto lineClipped = clip->lBarskyLine(line.getP1(), line.getP2());
+
+  for (std::size_t i = 0; i < lineClipped.size(); ++i)
+  {
+    ASSERT_EQ(expected.at(i), lineClipped.at(i));
+  }
+}
+
+TEST_F(ClipTest, LiangBarskyLineClippingInside)
+{
+  geometries::Line line(new geometries::Point(2, 5), new geometries::Point(7, 5), "Line");
+
+  std::vector<geometries::Point> expected = {
+    geometries::Point(2, 5),
+    geometries::Point(7, 5)
+  };
+
+  auto lineClipped = clip->lBarskyLine(line.getP1(), line.getP2());
+
+  for (std::size_t i = 0; i < lineClipped.size(); ++i)
+  {
+    ASSERT_EQ(expected.at(i), lineClipped.at(i));
+  }
+}
+
+TEST_F(ClipTest, LiangBarskyLineClippingLeft2Top)
 {
   geometries::Line line(new geometries::Point(-2, 7), new geometries::Point(7, -2), "Line");
-
-  geometries::Bezier bezier({
-    new geometries::Point(5, 5),
-    new geometries::Point(10, 10),
-    new geometries::Point(15, 5)//,
-    //new geometries::Point(20, 5) 
-  });
-
-  auto bezierClipped = sutherland->polygonClip(bezier.getBezierPoints(1u));
 
   std::vector<geometries::Point> expected = {
     geometries::Point(0, 5),
     geometries::Point(5, 0)
   };
-  
-  std::cout << "bezier size = " << bezierClipped.size() << std::endl;
-  for (std::size_t i = 0; i < bezierClipped.size(); ++i)
-  {
-    std::cout << "geometries::Point(" << bezierClipped[i].getX() <<
-      ", " << bezierClipped[i].getY() << ")" << std::endl;
 
-    //ASSERT_EQ(expected.at(i), bezierClipped.at(i));
+  auto lineClipped = clip->lBarskyLine(line.getP1(), line.getP2());
+
+  for (std::size_t i = 0; i < lineClipped.size(); ++i)
+  {
+    ASSERT_EQ(expected.at(i), lineClipped.at(i));
   }
 }

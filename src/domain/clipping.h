@@ -5,8 +5,7 @@
 
 namespace clipping
 {
-
-  class CohenSutherland
+  class Clip
   {
   private:
     const int INSIDE = 0; // 0000
@@ -16,13 +15,21 @@ namespace clipping
     const int TOP = 8;    // 1000
 
   public:
-    CohenSutherland(const geometries::Point& minPoint, const geometries::Point& maxPoint);
+    Clip(const geometries::Point& minPoint, const geometries::Point& maxPoint);
 
-    std::vector<geometries::Point> lineClip(
+    std::vector<geometries::Point> cSutherlandLine(
       const geometries::Point& p0,
       const geometries::Point& p1);
 
-    std::vector<geometries::Point> polygonClip(const std::vector<geometries::Point> &polygon);
+    std::vector<geometries::Point> cSutherlandPolygon(
+      const std::vector<geometries::Point> &polygon);
+
+    std::vector<geometries::Point> lBarskyLine(
+      const geometries::Point& p0,
+      const geometries::Point& p1);
+
+    std::vector<geometries::Point> lBarskyPolygon(
+      const std::vector<geometries::Point> &polygon);
 
   private:
     int computeOutCode(float x, float y);
