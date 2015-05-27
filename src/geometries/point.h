@@ -17,11 +17,11 @@ namespace geometries {
     const float& getY() const;
     const float& getZ() const;
 
-    std::vector<float> get() const;
+    const std::vector<float>& get() const;
 
-    void setX(float newX);
-    void setY(float newY);
-    void setZ(float newZ);
+    void translation(float dx, float dy);
+    void scaling(float sx, float sy);
+    void rotate(float angle);
 
     bool equals(const Point& other, float epison) const;
 
@@ -35,7 +35,7 @@ namespace geometries {
     Point& operator*=(float number);
 
   private:
-    float _x, _y, _z;
+    std::vector<float> _point;
   };
 }
 

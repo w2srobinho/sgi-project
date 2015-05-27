@@ -16,19 +16,13 @@ namespace geometries {
   public:
     virtual ~Geometry() {}
 
-    virtual Point center() = 0;
     virtual shape type() const = 0;
     virtual const std::string& getName() const = 0;
     virtual const std::vector<Point*>& getPoints() const = 0;
 
-  protected:
-    std::string generateUniqueName(const std::string& name)
+    Point center() const
     {
-      return name + "-" + std::to_string(++geoNumber);
-    }
-
-    Point geometryCenter(const std::vector<Point*>& points)
-    {
+      auto points = getPoints();
       float x = 0;
       float y = 0;
       auto size = points.size();
@@ -40,6 +34,56 @@ namespace geometries {
       }
 
       return Point((x / size), (y / size));
+    };
+
+    void translation(float dx, float dy)
+    {
+      for (auto &point : getPoints())
+      {
+        point->translation(dx, dy);
+      }
+    };
+    
+    void scaling(float sx, float sy)
+    {
+      auto centerGeometry = center();
+      auto dx = centerGeometry.getX();
+      auto dy = centerGeometry.getY();
+
+      translation(-dx, -dy); // translate to origin by center Geometry
+
+      for (auto point : getPoints())
+      {
+        point->scaling(sx, sy);
+      }
+
+      translation(dx, dy); // return to original center Geometry
+    };
+
+    void rotate(float angle)
+    {
+      rotate(center(), angle);
+    };
+
+    void rotate(const Point& rotatePoint, float angle)
+    {
+      auto dx = rotatePoint.getX();
+      auto dy = rotatePoint.getY();
+
+      translation(-dx, -dy); // translate to rotate point 
+
+      for (auto point : getPoints())
+      {
+        point->rotate(angle);
+      }
+
+      translation(dx, dy); // return to original center Geometry
+    };
+
+  protected:
+    std::string generateUniqueName(const std::string& name)
+    {
+      return name + "-" + std::to_string(++geoNumber);
     }
   };
 

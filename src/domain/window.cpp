@@ -1,7 +1,5 @@
 #include "window.h"
 
-#include "transform.h"
-
 #include <cassert>
 #include <memory>
 
@@ -40,14 +38,14 @@ const geometries::Point& Window::getMaxPoint() const
 
 void Window::verticalMove(float rate)
 {
-  minPoint.setY(minPoint.getY() + rate);
-  maxPoint.setY(maxPoint.getY() + rate);
+  minPoint.translation(0, rate);
+  maxPoint.translation(0, rate);
 }
 
 void Window::horizontalMove(float rate)
 {
-  minPoint.setX(minPoint.getX() + rate);
-  maxPoint.setX(maxPoint.getX() + rate);
+  minPoint.translation(rate, 0);
+  maxPoint.translation(rate, 0);
 }
 
 geometries::Point Window::center() const
@@ -77,28 +75,28 @@ void Window::translateGeometry(const std::string& geometryName, float dx, float 
 {
   assert(!displayFile.empty());
   auto geometry = displayFile[geometryName];
-  transform::translation(geometry, dx, dy);
+  geometry->translation(dx, dy);
 }
 
 void Window::scalingGeometry(const std::string& geometryName, float sx, float sy)
 {
   assert(!displayFile.empty());
   auto geometry = displayFile[geometryName];
-  transform::scaling(geometry, sx, sy);
+  geometry->scaling(sx, sy);
 }
 
 void Window::rotateOrigin(const std::string& geometryName, float angle)
 {
   assert(!displayFile.empty());
   auto geometry = displayFile[geometryName];
-  transform::rotate(geometry, geometry->center(), angle);
+  geometry->rotate(angle);
 }
 
 void Window::rotateWindow(const std::string& geometryName, float angle)
 {
   assert(!displayFile.empty());
   auto geometry = displayFile[geometryName];
-  transform::rotate(geometry, center(), angle);
+  geometry->rotate(center(), angle);
 }
 
 void Window::rotatePoint(
@@ -108,5 +106,5 @@ void Window::rotatePoint(
 {
   assert(!displayFile.empty());
   auto geometry = displayFile[geometryName];
-  transform::rotate(geometry, rotatePoint, angle);
+  geometry->rotate(rotatePoint, angle);
 }

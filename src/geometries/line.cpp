@@ -38,11 +38,6 @@ namespace geometries {
     return *_points.at(1);
   }
 
-  Point Line::center()
-  {
-    return geometryCenter(_points);
-  }
-
   const std::vector<Point*>& Line::getPoints() const
   {
     assert(_points.size() == 2);

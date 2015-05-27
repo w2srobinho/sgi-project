@@ -22,10 +22,38 @@ namespace geometries {
   {
 
   }
-  
-  Point Polygon::center()
+
+  const Point& Polygon::getPointAt(std::size_t pos) const
   {
-    return geometryCenter(_points);
+    return *_points.at(pos);
+  }
+
+  Point * const Polygon::operator[](std::size_t pos) const
+  {
+    return _points[pos];
+  }
+
+  bool Polygon::operator==(const Polygon& other) const
+  {
+    if (_points.size() != other.size())
+      return false;
+
+    for (std::size_t i = 0; i < _points.size(); ++i)
+    {
+      if (*_points.at(i) != other.getPointAt(i))
+        return false;
+    }
+    return true;
+  }
+
+  bool Polygon::operator!=(const Polygon& other) const
+  {
+    return !(*this == other);
+  }
+
+  std::size_t Polygon::size() const
+  {
+    return _points.size();
   }
 
   const std::vector<Point*>& Polygon::getPoints() const

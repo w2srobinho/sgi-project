@@ -1,6 +1,7 @@
 #include "point.h"
 
-#include <cmath>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 namespace geometries {
 
@@ -16,17 +17,13 @@ namespace geometries {
   }
   
   Point::Point(float x, float y)
-  : _x(x)
-  , _y(y)
-  , _z(1)
+    : _point({x, y, 1})
   {
   
   }
 
   Point::Point(const Point& other)
-    : _x(other.getX())
-    , _y(other.getY())
-    , _z(other.getZ())
+    : _point(other.get())
   {
 
   }
@@ -39,50 +36,91 @@ namespace geometries {
 
   const float& Point::getX() const
   {
-    return _x;
+    return _point.at(0);
   }
 
   const float& Point::getY() const
   {
-    return _y;
+    return _point.at(1);
   }
 
-  const float& Point::getZ() const
+  const std::vector<float>& Point::get() const
   {
-    return _z;
+    return _point;
   }
 
-  std::vector<float> Point::get() const
+  void Point::translation(float dx, float dy)
   {
-    return {_x, _y, _z};
+    std::vector<std::vector<float>> translateMatrix = { {  1,  0, 0 },
+                                                        {  0,  1, 0 },
+                                                        { dx, dy, 1 } };
+
+    std::vector<float> pNew = { 0, 0, 0 };
+    
+    for (std::size_t i = 0; i < translateMatrix.size(); ++i)
+    {
+      for (std::size_t j = 0; j < translateMatrix[i].size(); ++j)
+      {
+        pNew[j] += _point.at(i) * translateMatrix[i][j];
+      }
+    }
+    _point = pNew;
   }
 
-  void Point::setX(float newX)
+  void Point::scaling(float sx, float sy)
   {
-    _x = newX;
+    std::vector<std::vector<float>> scalingMatrix = { { sx,  0, 0 },
+                                                      {  0, sy, 0 },
+                                                      {  0,  0, 1 } };
+
+    std::vector<float> pNew = { 0, 0, 0 };
+
+    for (std::size_t i = 0; i < scalingMatrix.size(); ++i)
+    {
+      for (std::size_t j = 0; j < scalingMatrix[i].size(); ++j)
+      {
+        pNew[j] += _point.at(i) * scalingMatrix[i][j];
+      }
+    }
+
+    _point = pNew;
   }
 
-  void Point::setY(float newY)
+  void Point::rotate(float angle)
   {
-    _y = newY;
-  }
+    float radiansAngle = angle * M_PI / 180.f;
+    float cos = std::cos(radiansAngle);
+    float sin = std::sin(radiansAngle);
 
-  void Point::setZ(float newZ)
-  {
-    _z = newZ;
+    std::vector<std::vector<float>> rotateMatrix = { { cos, -sin, 0 },
+                                                     { sin,  cos, 0 },
+                                                     {   0,    0, 1 } };
+
+
+    std::vector<float> pNew = { 0, 0, 0 };
+
+    for (std::size_t i = 0; i < rotateMatrix.size(); ++i)
+    {
+      for (std::size_t j = 0; j < rotateMatrix[i].size(); ++j)
+      {
+        pNew[j] += _point.at(i) * rotateMatrix[i][j];
+      }
+    }
+
+    _point = pNew;
   }
 
   bool Point::equals(const Point& other, float epsilon) const
   {
-    return !((std::abs(_x - other.getX()) > epsilon) ||
-            (std::abs(_y - other.getY()) > epsilon) ||
-            (std::abs(_z - other.getZ()) > epsilon));
+    return !((std::abs(_point.at(0) - other.getX()) > epsilon) ||
+             (std::abs(_point.at(1) - other.getY()) > epsilon));
   }
 
   bool Point::operator<(const Point& other) const
   {
 
-    return _x < other.getX() && _y < other.getY();
+    return _point.at(0) < other.getX() &&
+           _point.at(1) < other.getY();
   }
 
   bool Point::operator>(const Point& other) const
@@ -93,14 +131,13 @@ namespace geometries {
 
   Point& Point::operator+=(const Point& other)
   {
-    _x += other.getX();
-    _y += other.getY();
+    _point[0] += other.getX();
+    _point[1] += other.getY();
     return *this;
   }
 
   bool Point::operator!=(const Point& other) const
   {
-
     return !(*this == other);
   }
 
@@ -112,8 +149,8 @@ namespace geometries {
 
   Point& Point::operator*=(float number)
   {
-    _x *= number;
-    _y *= number;
+    _point[0] *= number;
+    _point[1] *= number;
     return *this;
   }
 
@@ -121,9 +158,7 @@ namespace geometries {
   {
     if (this != &other) 
     {
-      _x = other.getX();
-      _y = other.getY();
-      _z = other.getZ();
+      _point = other.get();
     }
     return *this;
   }

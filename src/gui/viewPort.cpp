@@ -1,13 +1,12 @@
-#include "line.h"
-#include "transform.h"
 #include "viewPort.h"
+
+#include "bezier.h"
+#include "clipping.h"
+#include "line.h"
 #include "window.h"
 
 #include <QPainter>
 #include <QResizeEvent>
-#include "clipping.h"
-#include "bezier.h"
-#include <iostream>
 
 namespace {
   const int OFFSET_TO_VP = 10;
@@ -65,10 +64,8 @@ void ViewPort::addGeometry(geometries::Geometry *geometry)
 
 void ViewPort::resizeEvent(QResizeEvent *e)
 {
-  minVpPoint.setX(x() + OFFSET_TO_VP);
-  minVpPoint.setY(y() - OFFSET_TO_VP);
-  maxVpPoint.setX(e->size().width() - OFFSET_TO_VP);
-  maxVpPoint.setY(e->size().height() - OFFSET_TO_VP);
+  minVpPoint = geometries::Point(x() + OFFSET_TO_VP, y() - OFFSET_TO_VP);
+  maxVpPoint = geometries::Point(e->size().width() - OFFSET_TO_VP, e->size().height() - OFFSET_TO_VP);
   update();
   QWidget::resizeEvent(e);
 }

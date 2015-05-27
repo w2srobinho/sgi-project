@@ -20,11 +20,10 @@ namespace geometries {
     const Point& getP1() const;
     const Point& getP2() const;
 
-    Point center() override;
     shape type() const override;
     const std::string& getName() const override;
     const std::vector<Point*>& getPoints() const override;
-    
+
   private:
     std::vector<Point*> _points;
     std::string _name;
