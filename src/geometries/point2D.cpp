@@ -51,16 +51,6 @@ namespace geometries {
                                                         { dx, dy, 1 } };
 
     _point = dotProduct(_point, translateMatrix);
-//     std::vector<float> pNew = { 0, 0, 0 };
-//     
-//     for (std::size_t i = 0; i < translateMatrix.size(); ++i)
-//     {
-//       for (std::size_t j = 0; j < translateMatrix[i].size(); ++j)
-//       {
-//         pNew[j] += _point.at(i) * translateMatrix[i][j];
-//       }
-//     }
-//     _point = pNew;
   }
 
   void Point2D::scaling(float sx, float sy)
@@ -70,17 +60,6 @@ namespace geometries {
                                                       {  0,  0, 1 } };
 
     _point = dotProduct(_point, scalingMatrix);
-//     std::vector<float> pNew = { 0, 0, 0 };
-// 
-//     for (std::size_t i = 0; i < scalingMatrix.size(); ++i)
-//     {
-//       for (std::size_t j = i; j == scalingMatrix[i].size(); ++j)
-//       {
-//         pNew[j] += _point.at(i) * scalingMatrix[i][j];
-//       }
-//     }
-// 
-//     _point = pNew;
   }
 
   void Point2D::rotate(float angle)
@@ -94,17 +73,6 @@ namespace geometries {
                                                      {   0,    0, 1 } };
 
     _point = dotProduct(_point, rotateMatrix);
-//     std::vector<float> pNew = { 0, 0, 0 };
-// 
-//     for (std::size_t i = 0; i < rotateMatrix.size(); ++i)
-//     {
-//       for (std::size_t j = 0; j < rotateMatrix[i].size(); ++j)
-//       {
-//         pNew[j] += _point.at(i) * rotateMatrix[i][j];
-//       }
-//     }
-// 
-//     _point = pNew;
   }
 
   bool Point2D::equals(const Point2D& other, float epsilon) const
