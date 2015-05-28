@@ -1,7 +1,7 @@
 #ifndef _INCLUDED_GEOMETRY_
 #define _INCLUDED_GEOMETRY_
 
-#include "point.h"
+#include "point2D.h"
 
 #include <string>
 #include <vector>
@@ -18,9 +18,9 @@ namespace geometries {
 
     virtual shape type() const = 0;
     virtual const std::string& getName() const = 0;
-    virtual const std::vector<Point*>& getPoints() const = 0;
+    virtual const std::vector<Point2D*>& getPoints() const = 0;
 
-    Point center() const
+    Point2D center() const
     {
       auto points = getPoints();
       float x = 0;
@@ -33,7 +33,7 @@ namespace geometries {
         y += point->getY();
       }
 
-      return Point((x / size), (y / size));
+      return Point2D((x / size), (y / size));
     };
 
     void translation(float dx, float dy)
@@ -65,7 +65,7 @@ namespace geometries {
       rotate(center(), angle);
     };
 
-    void rotate(const Point& rotatePoint, float angle)
+    void rotate(const Point2D& rotatePoint, float angle)
     {
       auto dx = rotatePoint.getX();
       auto dy = rotatePoint.getY();

@@ -3,8 +3,8 @@
 namespace clipping {
 
   Clip::Clip(
-    const geometries::Point& minPoint,
-    const geometries::Point& maxPoint
+    const geometries::Point2D& minPoint,
+    const geometries::Point2D& maxPoint
     )
     : _minPoint(minPoint)
     , _maxPoint(maxPoint)
@@ -12,9 +12,9 @@ namespace clipping {
 
   }
 
-  std::vector<geometries::Point> Clip::cSutherlandLine(
-    const geometries::Point& p0,
-    const geometries::Point& p1)
+  std::vector<geometries::Point2D> Clip::cSutherlandLine(
+    const geometries::Point2D& p0,
+    const geometries::Point2D& p1)
   {
     float x0 = p0.getX();
     float y0 = p0.getY();
@@ -27,9 +27,9 @@ namespace clipping {
     while (true)
     {
       if (!(outcode0 | outcode1))
-        return { geometries::Point(x0, y0), geometries::Point(x1, y1) };
+        return { geometries::Point2D(x0, y0), geometries::Point2D(x1, y1) };
       else if (outcode0 & outcode1)
-        return { geometries::Point(0, 0), geometries::Point(0, 0) };
+        return { geometries::Point2D(0, 0), geometries::Point2D(0, 0) };
       else
       {
         float x = 0;
@@ -77,13 +77,13 @@ namespace clipping {
       }
     }
 
-    return{ geometries::Point(x0, y0), geometries::Point(x1, y1) };
+    return{ geometries::Point2D(x0, y0), geometries::Point2D(x1, y1) };
   }
 
-  std::vector<geometries::Point> Clip::cSutherlandPolygon(
-    const std::vector<geometries::Point> &polygon)
+  std::vector<geometries::Point2D> Clip::cSutherlandPolygon(
+    const std::vector<geometries::Point2D> &polygon)
   {
-    std::vector<geometries::Point> polygonClipped;
+    std::vector<geometries::Point2D> polygonClipped;
     auto previusPoint = polygon[0];
 
     for (unsigned int i = 1; i < polygon.size(); ++i)
@@ -103,9 +103,9 @@ namespace clipping {
     return polygonClipped;
   }
 
-  std::vector<geometries::Point> Clip::lBarskyLine(
-    const geometries::Point& p0,
-    const geometries::Point& p1)
+  std::vector<geometries::Point2D> Clip::lBarskyLine(
+    const geometries::Point2D& p0,
+    const geometries::Point2D& p1)
   {
     float x0 = p0.getX();
     float y0 = p0.getY();
@@ -143,7 +143,7 @@ namespace clipping {
 
       t = num / denom;
       
-      std::vector<geometries::Point> outLine = {geometries::Point(0, 0), geometries::Point(0, 0)};
+      std::vector<geometries::Point2D> outLine = {geometries::Point2D(0, 0), geometries::Point2D(0, 0)};
       // out line
       if (denom == 0 && num < 0)
         return outLine;
@@ -164,15 +164,15 @@ namespace clipping {
       }
     }
     
-    geometries::Point from((x0 + u * dx), (y0 + u * dy));
-    geometries::Point to((x0 + v * dx), (y0 + v * dy));
+    geometries::Point2D from((x0 + u * dx), (y0 + u * dy));
+    geometries::Point2D to((x0 + v * dx), (y0 + v * dy));
 
     return { from, to };
   }
 
-  std::vector<geometries::Point> Clip::lBarskyPolygon(const std::vector<geometries::Point> &polygon)
+  std::vector<geometries::Point2D> Clip::lBarskyPolygon(const std::vector<geometries::Point2D> &polygon)
   {
-    std::vector<geometries::Point> polygonClipped;
+    std::vector<geometries::Point2D> polygonClipped;
     auto previusPoint = polygon[0];
 
     for (unsigned int i = 1; i < polygon.size(); ++i)

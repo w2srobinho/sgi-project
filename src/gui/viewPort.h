@@ -2,7 +2,7 @@
 #define _INCLUDED_VIEWPORT_
 
 #include <QWidget>
-#include "point.h"
+#include "point2D.h"
 
 class Window;
 
@@ -21,7 +21,7 @@ public:
   QSize minimumSizeHint() const Q_DECL_OVERRIDE;
   QSize sizeHint() const Q_DECL_OVERRIDE;
   
-  geometries::Point windowToViewport(const geometries::Point& pointOnWindow);
+  geometries::Point2D windowToViewport(const geometries::Point2D& pointOnWindow);
 
   void addGeometry(geometries::Geometry *geometry);
   void redraw();
@@ -33,7 +33,7 @@ protected:
 private:
   Window *_window;
 
-  geometries::Point minVpPoint, maxVpPoint;
+  geometries::Point2D minVpPoint, maxVpPoint;
 };
 
 #endif

@@ -15,28 +15,28 @@ namespace clipping
     const int TOP = 8;    // 1000
 
   public:
-    Clip(const geometries::Point& minPoint, const geometries::Point& maxPoint);
+    Clip(const geometries::Point2D& minPoint, const geometries::Point2D& maxPoint);
 
-    std::vector<geometries::Point> cSutherlandLine(
-      const geometries::Point& p0,
-      const geometries::Point& p1);
+    std::vector<geometries::Point2D> cSutherlandLine(
+      const geometries::Point2D& p0,
+      const geometries::Point2D& p1);
 
-    std::vector<geometries::Point> cSutherlandPolygon(
-      const std::vector<geometries::Point> &polygon);
+    std::vector<geometries::Point2D> cSutherlandPolygon(
+      const std::vector<geometries::Point2D> &polygon);
 
-    std::vector<geometries::Point> lBarskyLine(
-      const geometries::Point& p0,
-      const geometries::Point& p1);
+    std::vector<geometries::Point2D> lBarskyLine(
+      const geometries::Point2D& p0,
+      const geometries::Point2D& p1);
 
-    std::vector<geometries::Point> lBarskyPolygon(
-      const std::vector<geometries::Point> &polygon);
+    std::vector<geometries::Point2D> lBarskyPolygon(
+      const std::vector<geometries::Point2D> &polygon);
 
   private:
     int computeOutCode(float x, float y);
 
   private:
-    geometries::Point _minPoint;
-    geometries::Point _maxPoint;
+    geometries::Point2D _minPoint;
+    geometries::Point2D _maxPoint;
   };
 }
 #endif

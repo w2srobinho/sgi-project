@@ -16,24 +16,24 @@ namespace geometries {
   {
   }
 
-  Bezier::Bezier(const std::vector<Point*>& points)
+  Bezier::Bezier(const std::vector<Point2D*>& points)
     : Bezier(points, "Curve")
   {
 
   }
 
-  Bezier::Bezier(const std::vector<Point*>& points, const std::string& name)
+  Bezier::Bezier(const std::vector<Point2D*>& points, const std::string& name)
     : Polygon(points, name)
   {
     assert(points.size() >= 3);
   }
   
-  std::vector<Point> Bezier::getBezierPoints(float maxT)
+  std::vector<Point2D> Bezier::getBezierPoints(float maxT)
   {
     maxT += 0.01f;
     auto _points = getPoints();
     assert(_points.size() >= 3u && _points.size() <= 4u);
-    std::vector<Point> bezierPoints;
+    std::vector<Point2D> bezierPoints;
     
     float step = 0.05f;
 
@@ -51,10 +51,10 @@ namespace geometries {
     return bezierPoints;
   }
 
-  geometries::Point Bezier::quadraticBezier(
-    const geometries::Point& p0,
-    const geometries::Point& p1, 
-    const geometries::Point& p2, 
+  geometries::Point2D Bezier::quadraticBezier(
+    const geometries::Point2D& p0,
+    const geometries::Point2D& p1, 
+    const geometries::Point2D& p2, 
     float t)
   {
     float x = powf(1 - t, 2) * p0.getX() +
@@ -64,14 +64,14 @@ namespace geometries {
               (1 - t) * 2 * t * p1.getY() +
               t * t * p2.getY();
 
-    return geometries::Point(x, y);
+    return geometries::Point2D(x, y);
   }
 
-  geometries::Point Bezier::cubicBezier(
-    const geometries::Point& p0,
-    const geometries::Point& p1,
-    const geometries::Point& p2,
-    const geometries::Point& p3,
+  geometries::Point2D Bezier::cubicBezier(
+    const geometries::Point2D& p0,
+    const geometries::Point2D& p1,
+    const geometries::Point2D& p2,
+    const geometries::Point2D& p3,
     float t)
   {
     float x = powf(1 - t, 3) * p0.getX() +
@@ -83,7 +83,7 @@ namespace geometries {
               (1 - t) * 3 * t * t * p2.getY() +
               t * t * t * p3.getY();
 
-    return geometries::Point(x, y);
+    return geometries::Point2D(x, y);
   }
 
   shape Bezier::type() const

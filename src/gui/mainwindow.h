@@ -10,7 +10,7 @@ class Window;
 
 namespace geometries
 {
-  class Point;
+  class Point2D;
 }
 
 namespace Ui {
@@ -60,7 +60,7 @@ private:
   std::unique_ptr<ViewPort> viewPort;
   std::unique_ptr<Window> window;
 
-  std::vector<geometries::Point*> pointsToPolygon;
+  std::vector<geometries::Point2D*> pointsToPolygon;
 };
 
 #endif

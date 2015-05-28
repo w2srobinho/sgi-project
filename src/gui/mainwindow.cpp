@@ -1,7 +1,7 @@
 #include "conversions.h"
 #include "line.h"
 #include "mainwindow.h"
-#include "point.h"
+#include "point2D.h"
 #include "polygon.h"
 #include "ui_mainwindow.h"
 #include "viewPort.h"
@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
   connectButtons();
   
-  window.reset(new Window(geometries::Point(0.0, 0.0), geometries::Point(40.0, 40.0)));
+  window.reset(new Window(geometries::Point2D(0.0, 0.0), geometries::Point2D(40.0, 40.0)));
   viewPort.reset(new ViewPort(window.get(), ui->groupBox));
   ui->verticalLayout_3->addWidget(viewPort.get());
   ui->rotatePointX->setEnabled(false);
@@ -93,15 +93,15 @@ void MainWindow::addPointButton_clicked()
   auto name = ui->pointName->text().toStdString();
 
   geometries::Geometry * geometry;
-  std::unique_ptr<geometries::Point> point(new geometries::Point(x.toFloat(), y.toFloat()));
+  std::unique_ptr<geometries::Point2D> point(new geometries::Point2D(x.toFloat(), y.toFloat()));
 
   ui->pointEditX->setText("");
   ui->pointEditY->setText("");
 
   if (name.empty())
-    geometry = new geometries::Polygon(std::vector<geometries::Point*>{point.release()});
+    geometry = new geometries::Polygon(std::vector<geometries::Point2D*>{point.release()});
   else {
-    geometry = new geometries::Polygon(std::vector<geometries::Point*>{point.release()}, name);
+    geometry = new geometries::Polygon(std::vector<geometries::Point2D*>{point.release()}, name);
   }
 
   viewPort->addGeometry(geometry);
@@ -135,8 +135,8 @@ void MainWindow::addLineButton_clicked()
   }
 
   auto name = ui->LineName->text().toStdString();
-  std::unique_ptr<geometries::Point> p1(new geometries::Point(ptoX1.toFloat(), ptoY1.toFloat()));
-  std::unique_ptr<geometries::Point> p2(new geometries::Point(ptoX2.toFloat(), ptoY2.toFloat()));
+  std::unique_ptr<geometries::Point2D> p1(new geometries::Point2D(ptoX1.toFloat(), ptoY1.toFloat()));
+  std::unique_ptr<geometries::Point2D> p2(new geometries::Point2D(ptoX2.toFloat(), ptoY2.toFloat()));
   
   ui->lineX1->setText("");
   ui->lineY1->setText("");
@@ -146,7 +146,7 @@ void MainWindow::addLineButton_clicked()
   geometries::Geometry *geometry;
 
   if (name.empty())
-    geometry = new geometries::Line(std::vector<geometries::Point*>{ p1.release(), p2.release() });
+    geometry = new geometries::Line(std::vector<geometries::Point2D*>{ p1.release(), p2.release() });
   else
     geometry = new geometries::Line(p1.release(), p2.release(), name);
 
@@ -168,7 +168,7 @@ void MainWindow::addPointOnPolygonButton_clicked()
     return;
   }
 
-  pointsToPolygon.push_back(new geometries::Point(x.toFloat(), y.toFloat()));
+  pointsToPolygon.push_back(new geometries::Point2D(x.toFloat(), y.toFloat()));
   ui->polygonEditX->setText("");
   ui->polygonEditY->setText("");
   
@@ -216,13 +216,13 @@ void MainWindow::addCurveButton_clicked()
     return;
   }
 
-  std::vector<geometries::Point*> pointsToBezier = { 
-    new geometries::Point(x0.toFloat(), y0.toFloat()),
-    new geometries::Point(x1.toFloat(), y1.toFloat()),
-    new geometries::Point(x2.toFloat(), y2.toFloat())};
+  std::vector<geometries::Point2D*> pointsToBezier = { 
+    new geometries::Point2D(x0.toFloat(), y0.toFloat()),
+    new geometries::Point2D(x1.toFloat(), y1.toFloat()),
+    new geometries::Point2D(x2.toFloat(), y2.toFloat())};
 
   if (!(x3.isEmpty() && y3.isEmpty()))
-    pointsToBezier.push_back(new geometries::Point(x3.toFloat(), y3.toFloat()));
+    pointsToBezier.push_back(new geometries::Point2D(x3.toFloat(), y3.toFloat()));
     
   ui->x0Bezier->setText("");
   ui->y0Bezier->setText("");
@@ -318,7 +318,7 @@ void MainWindow::leftRotateButton_clicked()
   {
     float rotateX = ui->rotatePointX->text().toFloat();
     float rotateY = ui->rotatePointY->text().toFloat();
-    window->rotatePoint(geometryName, geometries::Point(rotateX, rotateY), angle);
+    window->rotatePoint(geometryName, geometries::Point2D(rotateX, rotateY), angle);
   }
   viewPort->redraw();
 }
@@ -345,7 +345,7 @@ void MainWindow::rightRotateButton_clicked()
   {
     float rotateX = ui->rotatePointX->text().toFloat();
     float rotateY = ui->rotatePointY->text().toFloat();
-    window->rotatePoint(geometryName, geometries::Point(rotateX, rotateY), angle);
+    window->rotatePoint(geometryName, geometries::Point2D(rotateX, rotateY), angle);
   }
   viewPort->redraw();
 }

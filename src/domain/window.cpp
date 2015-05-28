@@ -8,7 +8,7 @@ Window::~Window()
 
 }
 
-Window::Window(const geometries::Point& min, const geometries::Point& max)
+Window::Window(const geometries::Point2D& min, const geometries::Point2D& max)
   : minPoint(min)
   , maxPoint(max)
 {
@@ -26,12 +26,12 @@ std::vector<geometries::Geometry*> Window::getGeometries() const
   return _geometries;
 }
 
-const geometries::Point& Window::getMinPoint() const
+const geometries::Point2D& Window::getMinPoint() const
 {
   return minPoint;
 }
 
-const geometries::Point& Window::getMaxPoint() const
+const geometries::Point2D& Window::getMaxPoint() const
 {
   return maxPoint;
 }
@@ -48,12 +48,12 @@ void Window::horizontalMove(float rate)
   maxPoint.translation(rate, 0);
 }
 
-geometries::Point Window::center() const
+geometries::Point2D Window::center() const
 {
   float x = ((maxPoint.getX() - minPoint.getX()) / 2);
   float y = ((maxPoint.getY() - minPoint.getY()) / 2);
 
-  return geometries::Point(x, y);
+  return geometries::Point2D(x, y);
 }
 
 void Window::zoomIn()
@@ -101,7 +101,7 @@ void Window::rotateWindow(const std::string& geometryName, float angle)
 
 void Window::rotatePoint(
   const std::string& geometryName, 
-  const geometries::Point& rotatePoint, 
+  const geometries::Point2D& rotatePoint, 
   float angle)
 {
   assert(!displayFile.empty());

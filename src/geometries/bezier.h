@@ -1,7 +1,7 @@
 #ifndef _INCLUDED_BEZIER_
 #define _INCLUDED_BEZIER_
 
-#include "point.h"
+#include "point2D.h"
 #include "polygon.h"
 
 #include <vector>
@@ -12,25 +12,25 @@ namespace geometries {
   {
   public:
     ~Bezier();
-    Bezier(const std::vector<Point*>& points);
-    Bezier(const std::vector<Point*>& points, const std::string& name);
+    Bezier(const std::vector<Point2D*>& points);
+    Bezier(const std::vector<Point2D*>& points, const std::string& name);
     
     shape type() const override;
 
-    std::vector<Point> getBezierPoints(float maxT);
+    std::vector<Point2D> getBezierPoints(float maxT);
 
   private:
-    geometries::Point quadraticBezier(
-      const geometries::Point& p0,
-      const geometries::Point& p1,
-      const geometries::Point& p2,
+    geometries::Point2D quadraticBezier(
+      const geometries::Point2D& p0,
+      const geometries::Point2D& p1,
+      const geometries::Point2D& p2,
       float t);
 
-    geometries::Point cubicBezier(
-      const geometries::Point& p0,
-      const geometries::Point& p1,
-      const geometries::Point& p2,
-      const geometries::Point& p3,
+    geometries::Point2D cubicBezier(
+      const geometries::Point2D& p0,
+      const geometries::Point2D& p1,
+      const geometries::Point2D& p2,
+      const geometries::Point2D& p3,
       float t);    
   };
 }
