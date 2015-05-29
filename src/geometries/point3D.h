@@ -20,9 +20,8 @@ namespace geometries {
 
     void translation(float dx, float dy, float dz);
     void scaling(float sx, float sy, float sz);
+    
     void rotateX(float angle);
-
-
     void rotateY(float angle);
     void rotateZ(float angle);
 
