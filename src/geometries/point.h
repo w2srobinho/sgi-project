@@ -4,13 +4,14 @@
 #include <vector>
 
 namespace geometries {
-  class Point3D
+  class Point
   {
   public:
-    virtual ~Point3D();
-    Point3D();
-    Point3D(float x, float y, float z);
-    Point3D(const Point3D& other);
+    virtual ~Point();
+    Point();
+    Point(float x, float y);
+    Point(float x, float y, float z);
+    Point(const Point& other);
 
     const float& getX() const;
     const float& getY() const;
@@ -25,16 +26,18 @@ namespace geometries {
     void rotateY(float angle);
     void rotateZ(float angle);
 
-    bool equals(const Point3D& other, float epison) const;
+    bool equals(const Point& other, float epison) const;
 
-    bool operator==(const Point3D& other) const;
-    bool operator!=(const Point3D& other) const;
-    bool operator< (const Point3D& other) const;
-    bool operator> (const Point3D& other) const;
+    bool operator==(const Point& other) const;
+    bool operator!=(const Point& other) const;
+    bool operator< (const Point& other) const;
+    bool operator> (const Point& other) const;
 
-    Point3D& operator=(const Point3D& other);
-    Point3D& operator+=(const Point3D& other);
-    Point3D& operator*=(float number);
+    Point& operator=(const Point& other);
+    Point& operator+=(const Point& other);
+    Point& operator*=(float number);
+
+    Point operator+ (const Point& other);
 
   private:
     float radiansAngle(float angle);

@@ -1,6 +1,8 @@
 #pragma once
 #ifndef _INCLUDED_CLIPPING_H_
 #define _INCLUDED_CLIPPING_H_
+
+#include "point.h"
 #include "polygon.h"
 
 namespace clipping
@@ -15,28 +17,28 @@ namespace clipping
     const int TOP = 8;    // 1000
 
   public:
-    Clip(const geometries::Point2D& minPoint, const geometries::Point2D& maxPoint);
+    Clip(const geometries::Point& minPoint, const geometries::Point& maxPoint);
 
-    std::vector<geometries::Point2D> cSutherlandLine(
-      const geometries::Point2D& p0,
-      const geometries::Point2D& p1);
+    std::vector<geometries::Point> cSutherlandLine(
+      const geometries::Point& p0,
+      const geometries::Point& p1);
 
-    std::vector<geometries::Point2D> cSutherlandPolygon(
-      const std::vector<geometries::Point2D> &polygon);
+    std::vector<geometries::Point> cSutherlandPolygon(
+      const std::vector<geometries::Point> &polygon);
 
-    std::vector<geometries::Point2D> lBarskyLine(
-      const geometries::Point2D& p0,
-      const geometries::Point2D& p1);
+    std::vector<geometries::Point> lBarskyLine(
+      const geometries::Point& p0,
+      const geometries::Point& p1);
 
-    std::vector<geometries::Point2D> lBarskyPolygon(
-      const std::vector<geometries::Point2D> &polygon);
+    std::vector<geometries::Point> lBarskyPolygon(
+      const std::vector<geometries::Point> &polygon);
 
   private:
     int computeOutCode(float x, float y);
 
   private:
-    geometries::Point2D _minPoint;
-    geometries::Point2D _maxPoint;
+    geometries::Point _minPoint;
+    geometries::Point _maxPoint;
   };
 }
 #endif

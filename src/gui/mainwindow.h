@@ -10,7 +10,7 @@ class Window;
 
 namespace geometries
 {
-  class Point2D;
+  class Point;
 }
 
 namespace Ui {
@@ -53,6 +53,8 @@ protected slots:
   void applyTranslate_clicked();
   void applyScaling_clicked();
  
+private:
+  void rotate(float angle);
 
 private:
   Ui::MainWindow *ui;
@@ -60,7 +62,7 @@ private:
   std::unique_ptr<ViewPort> viewPort;
   std::unique_ptr<Window> window;
 
-  std::vector<geometries::Point2D*> pointsToPolygon;
+  std::vector<geometries::Point*> pointsToPolygon;
 };
 
 #endif

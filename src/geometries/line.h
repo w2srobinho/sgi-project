@@ -2,7 +2,7 @@
 #define _INCLUDED_LINE_
 
 #include "geometry.h"
-#include "point2D.h"
+#include "point.h"
 
 #include <initializer_list>
 
@@ -12,20 +12,20 @@ namespace geometries {
   {
   public:
     ~Line();
-    Line(const std::vector<Point2D*>& points);
+    Line(const std::vector<Point*>& points);
     Line(float x1, float y1, float x2, float y2, const std::string& name);
-    Line(Point2D* p1, Point2D* p2, const std::string& name);
-    Line(const std::vector<Point2D*>& points, const std::string& name);
+    Line(Point* p1, Point* p2, const std::string& name);
+    Line(const std::vector<Point*>& points, const std::string& name);
 
-    const Point2D& getP1() const;
-    const Point2D& getP2() const;
+    const Point& getP1() const;
+    const Point& getP2() const;
 
     shape type() const override;
     const std::string& getName() const override;
-    const std::vector<Point2D*>& getPoints() const override;
+    const std::vector<Point*>& getPoints() const override;
 
   private:
-    std::vector<Point2D*> _points;
+    std::vector<Point*> _points;
     std::string _name;
   };
 }

@@ -1,7 +1,8 @@
+#include "bezier.h"
 #include "conversions.h"
 #include "line.h"
 #include "mainwindow.h"
-#include "point2D.h"
+#include "point.h"
 #include "polygon.h"
 #include "ui_mainwindow.h"
 #include "viewPort.h"
@@ -13,10 +14,9 @@
 
 #include <assert.h>
 #include <iostream>
-#include "bezier.h"
 
 namespace {
-  const int RATE_TO_MOVE = 2;
+  const int RATE_TO_MOVE = 5;
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -28,13 +28,14 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
   connectButtons();
   
-  window.reset(new Window(geometries::Point2D(0.0, 0.0), geometries::Point2D(40.0, 40.0)));
+  window.reset(new Window(geometries::Point(-100.0, -100.0), geometries::Point(100.0, 100.0)));
   viewPort.reset(new ViewPort(window.get(), ui->groupBox));
   ui->verticalLayout_3->addWidget(viewPort.get());
   ui->rotatePointX->setEnabled(false);
   ui->rotatePointY->setEnabled(false);
   ui->listWidget->setSelectionMode(QAbstractItemView::SingleSelection);
   hasNotGeometry();
+
 }
 
 MainWindow::~MainWindow()
@@ -93,15 +94,15 @@ void MainWindow::addPointButton_clicked()
   auto name = ui->pointName->text().toStdString();
 
   geometries::Geometry * geometry;
-  std::unique_ptr<geometries::Point2D> point(new geometries::Point2D(x.toFloat(), y.toFloat()));
+  std::unique_ptr<geometries::Point> point(new geometries::Point(x.toFloat(), y.toFloat()));
 
   ui->pointEditX->setText("");
   ui->pointEditY->setText("");
 
   if (name.empty())
-    geometry = new geometries::Polygon(std::vector<geometries::Point2D*>{point.release()});
+    geometry = new geometries::Polygon(std::vector<geometries::Point*>{point.release()});
   else {
-    geometry = new geometries::Polygon(std::vector<geometries::Point2D*>{point.release()}, name);
+    geometry = new geometries::Polygon(std::vector<geometries::Point*>{point.release()}, name);
   }
 
   viewPort->addGeometry(geometry);
@@ -135,8 +136,8 @@ void MainWindow::addLineButton_clicked()
   }
 
   auto name = ui->LineName->text().toStdString();
-  std::unique_ptr<geometries::Point2D> p1(new geometries::Point2D(ptoX1.toFloat(), ptoY1.toFloat()));
-  std::unique_ptr<geometries::Point2D> p2(new geometries::Point2D(ptoX2.toFloat(), ptoY2.toFloat()));
+  std::unique_ptr<geometries::Point> p1(new geometries::Point(ptoX1.toFloat(), ptoY1.toFloat()));
+  std::unique_ptr<geometries::Point> p2(new geometries::Point(ptoX2.toFloat(), ptoY2.toFloat()));
   
   ui->lineX1->setText("");
   ui->lineY1->setText("");
@@ -146,7 +147,7 @@ void MainWindow::addLineButton_clicked()
   geometries::Geometry *geometry;
 
   if (name.empty())
-    geometry = new geometries::Line(std::vector<geometries::Point2D*>{ p1.release(), p2.release() });
+    geometry = new geometries::Line(std::vector<geometries::Point*>{ p1.release(), p2.release() });
   else
     geometry = new geometries::Line(p1.release(), p2.release(), name);
 
@@ -168,7 +169,7 @@ void MainWindow::addPointOnPolygonButton_clicked()
     return;
   }
 
-  pointsToPolygon.push_back(new geometries::Point2D(x.toFloat(), y.toFloat()));
+  pointsToPolygon.push_back(new geometries::Point(x.toFloat(), y.toFloat()));
   ui->polygonEditX->setText("");
   ui->polygonEditY->setText("");
   
@@ -216,13 +217,13 @@ void MainWindow::addCurveButton_clicked()
     return;
   }
 
-  std::vector<geometries::Point2D*> pointsToBezier = { 
-    new geometries::Point2D(x0.toFloat(), y0.toFloat()),
-    new geometries::Point2D(x1.toFloat(), y1.toFloat()),
-    new geometries::Point2D(x2.toFloat(), y2.toFloat())};
+  std::vector<geometries::Point*> pointsToBezier = { 
+    new geometries::Point(x0.toFloat(), y0.toFloat()),
+    new geometries::Point(x1.toFloat(), y1.toFloat()),
+    new geometries::Point(x2.toFloat(), y2.toFloat())};
 
   if (!(x3.isEmpty() && y3.isEmpty()))
-    pointsToBezier.push_back(new geometries::Point2D(x3.toFloat(), y3.toFloat()));
+    pointsToBezier.push_back(new geometries::Point(x3.toFloat(), y3.toFloat()));
     
   ui->x0Bezier->setText("");
   ui->y0Bezier->setText("");
@@ -266,7 +267,7 @@ void MainWindow::applyTranslate_clicked()
   }
 
   auto geometryName = currentItem->text().toStdString();
-  window->translateGeometry(geometryName, dx.toFloat(), dy.toFloat());
+  window->translateGeometry(geometryName, dx.toFloat(), dy.toFloat(), 0);
   ui->dxTranslate->setText("0");
   ui->dyTranslate->setText("0");
   viewPort->redraw();
@@ -289,65 +290,51 @@ void MainWindow::applyScaling_clicked()
   }
 
   auto geometryName = currentItem->text().toStdString();
-  window->scalingGeometry(geometryName, sx.toFloat(), sy.toFloat());
+  window->scalingGeometry(geometryName, sx.toFloat(), sy.toFloat(), 0);
   ui->sxScaling->setText("1");
   ui->syScaling->setText("1");
   viewPort->redraw();
 
 }
 
-void MainWindow::leftRotateButton_clicked()
+void MainWindow::rotate(float angle)
 {
-  float angle = 360.f - ui->angleSpinBox->text().toFloat();
-  auto currentItem = ui->listWidget->currentItem();
-
-  if (!currentItem)
-    return;
-
-  auto geometryName = currentItem->text().toStdString();
-
-  if (ui->rb_origin->isChecked())
+  if (ui->rb_world->isChecked())
   {
-    window->rotateOrigin(geometryName, angle);
-  }
-  else if (ui->rb_world->isChecked())
-  {
-    window->rotateWindow(geometryName, angle);
+    window->rotateWindow(angle);
   }
   else
   {
-    float rotateX = ui->rotatePointX->text().toFloat();
-    float rotateY = ui->rotatePointY->text().toFloat();
-    window->rotatePoint(geometryName, geometries::Point2D(rotateX, rotateY), angle);
+    auto currentItem = ui->listWidget->currentItem();
+    if (!currentItem)
+      return;
+
+    auto geometryName = currentItem->text().toStdString();
+
+    if (ui->rb_origin->isChecked())
+    {
+      window->rotateOrigin(geometryName, angle);
+    }
+    else
+    {
+      float rotateX = ui->rotatePointX->text().toFloat();
+      float rotateY = ui->rotatePointY->text().toFloat();
+      window->rotatePoint(geometryName, geometries::Point(rotateX, rotateY), angle);
+    }
   }
   viewPort->redraw();
 }
 
+void MainWindow::leftRotateButton_clicked()
+{
+  float angle = 360.f - ui->angleSpinBox->text().toFloat();
+  rotate(angle);
+}
+
 void MainWindow::rightRotateButton_clicked()
 {
-  float angle = ui->angleSpinBox->text().toFloat();
-  auto currentItem = ui->listWidget->currentItem();
-
-  if (!currentItem)
-    return;
-
-  auto geometryName = currentItem->text().toStdString();
-
-  if (ui->rb_origin->isChecked())
-  {
-    window->rotateOrigin(geometryName, angle);
-  }
-  else if (ui->rb_world->isChecked())
-  {
-    window->rotateWindow(geometryName, angle);
-  }
-  else
-  {
-    float rotateX = ui->rotatePointX->text().toFloat();
-    float rotateY = ui->rotatePointY->text().toFloat();
-    window->rotatePoint(geometryName, geometries::Point2D(rotateX, rotateY), angle);
-  }
-  viewPort->redraw();
+  float angle = ui->angleSpinBox->text().toFloat();  
+  rotate(angle);
 }
 
 void MainWindow::connectButtons()

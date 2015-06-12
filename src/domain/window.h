@@ -2,7 +2,7 @@
 #define _INCLUDED_WINDOW_
 
 #include "geometry.h"
-#include "point2D.h"
+#include "point.h"
 
 #include <unordered_map>
 #include <memory>
@@ -13,22 +13,25 @@ class Window
 {
 public:
   ~Window();
-  Window(const geometries::Point2D& min, const geometries::Point2D& max);
+  Window(const geometries::Point& min, const geometries::Point& max);
 
   std::vector<geometries::Geometry*> getGeometries() const;
 
-  const geometries::Point2D& getMinPoint() const;
-  const geometries::Point2D& getMaxPoint() const;
+  const geometries::Point& getMinPoint() const;
+  const geometries::Point& getMaxPoint() const;
   
   void addGeometry(geometries::Geometry *shape);
   void verticalMove(float rate);
   void horizontalMove(float rate);
-  void translateGeometry(const std::string& geometryName, float dx, float dy);
-  void scalingGeometry(const std::string& geometryName, float sx, float sy);
+
+  void translateGeometry(const std::string& geometryName, float dx, float dy, float dz);
+  void scalingGeometry(const std::string& geometryName, float sx, float sy, float sz);
+
   void rotateOrigin(const std::string& geometryName, float angle);
-  void rotateWindow(const std::string& geometryName, float angle);
-  void rotatePoint(const std::string& geometryName, const geometries::Point2D& rotatePoint, float angle);
-  geometries::Point2D center() const;
+  void rotatePoint(const std::string& geometryName, const geometries::Point& rotatePoint, float angle);
+  void rotateWindow(float angle);
+
+  geometries::Point center() const;
   void zoomIn();
   void zoomOut();
 
@@ -36,7 +39,8 @@ private:
   void zoom(float factor);
 
 private:
-  geometries::Point2D minPoint, maxPoint;
+  float _angle;
+  geometries::Point minPoint, maxPoint;
 
   std::vector<geometries::Geometry*> _geometries;
   std::unordered_map<std::string, geometries::Geometry*> displayFile;

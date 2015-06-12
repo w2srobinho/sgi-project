@@ -20,8 +20,8 @@ ViewPort::~ViewPort()
 ViewPort::ViewPort(Window *window, QWidget *parent)
     : QWidget(parent)
     , _window(window)
-    , minVpPoint(geometries::Point2D(0, 0))
-    , maxVpPoint(geometries::Point2D(0, 0))
+    , minVpPoint(geometries::Point(0, 0))
+    , maxVpPoint(geometries::Point(0, 0))
 {
   setBackgroundRole(QPalette::Base);
   setAutoFillBackground(true);    
@@ -37,7 +37,7 @@ QSize ViewPort::sizeHint() const
     return QSize(400, 200);
 }
 
-geometries::Point2D ViewPort::windowToViewport(const geometries::Point2D& pointOnWindow)
+geometries::Point ViewPort::windowToViewport(const geometries::Point& pointOnWindow)
 {
   /**
   * Xvp = ((Xw - Xwmin) / (Xwmax - Xwmin)) * (Xvpmax - Xvpmin)
@@ -53,7 +53,7 @@ geometries::Point2D ViewPort::windowToViewport(const geometries::Point2D& pointO
   auto viewPortHeight = height()/*maxVpPoint.getY() - minVpPoint.getY()*/;
   auto yvp = (1 - ((pointOnWindow.getY() - _window->getMinPoint().getY()) / (windowHeight))) * viewPortHeight;
 
-  return geometries::Point2D(xvp, yvp);
+  return geometries::Point(xvp, yvp);
 }
 
 void ViewPort::addGeometry(geometries::Geometry *geometry)
@@ -64,8 +64,8 @@ void ViewPort::addGeometry(geometries::Geometry *geometry)
 
 void ViewPort::resizeEvent(QResizeEvent *e)
 {
-  minVpPoint = geometries::Point2D(x() + OFFSET_TO_VP, y() - OFFSET_TO_VP);
-  maxVpPoint = geometries::Point2D(e->size().width() - OFFSET_TO_VP, e->size().height() - OFFSET_TO_VP);
+  minVpPoint = geometries::Point(x() + OFFSET_TO_VP, y() - OFFSET_TO_VP);
+  maxVpPoint = geometries::Point(e->size().width() - OFFSET_TO_VP, e->size().height() - OFFSET_TO_VP);
   update();
   QWidget::resizeEvent(e);
 }
@@ -111,7 +111,7 @@ void ViewPort::paintEvent(QPaintEvent *)
             default:
             {
               QPolygonF polygonQt;
-              std::vector<geometries::Point2D> polygonTransformed;
+              std::vector<geometries::Point> polygonTransformed;
 
               for (auto point : geometry->getPoints())
                 polygonTransformed.push_back(windowToViewport(*point));
@@ -147,7 +147,7 @@ void ViewPort::paintEvent(QPaintEvent *)
             break;
 
           QList<QPointF> listPointQt;
-          std::vector<geometries::Point2D> bezierTransformed;
+          std::vector<geometries::Point> bezierTransformed;
           
           for (auto point : bezier->getBezierPoints(1u))
             bezierTransformed.push_back(windowToViewport(point));

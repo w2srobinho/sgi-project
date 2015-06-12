@@ -1,7 +1,7 @@
 #ifndef _INCLUDED_GEOMETRY_
 #define _INCLUDED_GEOMETRY_
 
-#include "point2D.h"
+#include "point.h"
 
 #include <string>
 #include <vector>
@@ -18,46 +18,49 @@ namespace geometries {
 
     virtual shape type() const = 0;
     virtual const std::string& getName() const = 0;
-    virtual const std::vector<Point2D*>& getPoints() const = 0;
+    virtual const std::vector<Point*>& getPoints() const = 0;
 
-    Point2D center() const
+    Point center() const
     {
       auto points = getPoints();
       float x = 0;
       float y = 0;
+      float z = 0;
       auto size = points.size();
 
       for (auto point : points)
       {
         x += point->getX();
         y += point->getY();
+        z += point->getZ();
       }
 
-      return Point2D((x / size), (y / size));
+      return Point((x / size), (y / size), (z / size));
     };
 
-    void translation(float dx, float dy)
+    void translation(float dx, float dy, float dz)
     {
       for (auto &point : getPoints())
       {
-        point->translation(dx, dy);
+        point->translation(dx, dy, dz);
       }
     };
     
-    void scaling(float sx, float sy)
+    void scaling(float sx, float sy, float sz)
     {
       auto centerGeometry = center();
       auto dx = centerGeometry.getX();
       auto dy = centerGeometry.getY();
+      auto dz = centerGeometry.getZ();
 
-      translation(-dx, -dy); // translate to origin by center Geometry
+      translation(-dx, -dy, -dz); // translate to origin by center Geometry
 
       for (auto point : getPoints())
       {
-        point->scaling(sx, sy);
+        point->scaling(sx, sy, sz);
       }
 
-      translation(dx, dy); // return to original center Geometry
+      translation(dx, dy, dz); // return to original center Geometry
     };
 
     void rotate(float angle)
@@ -65,19 +68,20 @@ namespace geometries {
       rotate(center(), angle);
     };
 
-    void rotate(const Point2D& rotatePoint, float angle)
+    void rotate(const Point& rotatePoint, float angle)
     {
       auto dx = rotatePoint.getX();
       auto dy = rotatePoint.getY();
+      auto dz = rotatePoint.getZ();
 
-      translation(-dx, -dy); // translate to rotate point 
+      translation(-dx, -dy, -dz); // translate to rotate point 
 
       for (auto point : getPoints())
       {
-        point->rotate(angle);
+        point->rotateZ(angle);
       }
 
-      translation(dx, dy); // return to original center Geometry
+      translation(dx, dy, dz); // return to original center Geometry
     };
 
   protected:

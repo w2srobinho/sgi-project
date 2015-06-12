@@ -10,25 +10,25 @@ namespace geometries {
     }
   }
 
-  Polygon::Polygon(const std::vector<Point2D*>& points)
+  Polygon::Polygon(const std::vector<Point*>& points)
     : Polygon(points, "Polygon")
   {
 
   }
 
-  Polygon::Polygon(const std::vector<Point2D*>& points, const std::string& name)
+  Polygon::Polygon(const std::vector<Point*>& points, const std::string& name)
     : _points(points)
     , _name(generateUniqueName(name))
   {
 
   }
 
-  const Point2D& Polygon::getPointAt(std::size_t pos) const
+  const Point& Polygon::getPointAt(std::size_t pos) const
   {
     return *_points.at(pos);
   }
 
-  Point2D * const Polygon::operator[](std::size_t pos) const
+  Point * const Polygon::operator[](std::size_t pos) const
   {
     return _points[pos];
   }
@@ -56,7 +56,7 @@ namespace geometries {
     return _points.size();
   }
 
-  const std::vector<Point2D*>& Polygon::getPoints() const
+  const std::vector<Point*>& Polygon::getPoints() const
   {
     return _points;
   }

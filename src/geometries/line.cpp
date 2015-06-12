@@ -12,33 +12,33 @@ namespace geometries {
     }
   }
 
-  Line::Line(const std::vector<Point2D*>& points)
+  Line::Line(const std::vector<Point*>& points)
     : Line(points, "Line")
   {
   }
   
-  Line::Line(Point2D* p1, Point2D* p2, const std::string& name)
+  Line::Line(Point* p1, Point* p2, const std::string& name)
     : Line({p1, p2}, name)
   {
   }
 
-  Line::Line(const std::vector<Point2D*> &points, const std::string& name)
+  Line::Line(const std::vector<Point*> &points, const std::string& name)
     : _points(points)
     , _name(generateUniqueName(name))
   {
   }
 
-  const Point2D& Line::getP1() const
+  const Point& Line::getP1() const
   {
     return *_points.at(0);
   }
 
-  const Point2D& Line::getP2() const
+  const Point& Line::getP2() const
   {
     return *_points.at(1);
   }
 
-  const std::vector<Point2D*>& Line::getPoints() const
+  const std::vector<Point*>& Line::getPoints() const
   {
     assert(_points.size() == 2);
     return _points;
